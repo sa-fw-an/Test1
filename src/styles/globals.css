@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Caveat';
+  src: url('/fonts/Caveat-Regular.ttf');
+}
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto-Regular.ttf');
+}
+@font-face {
+  font-family: 'Pacifico';
+  src: url('/fonts/Pacifico-Regular.ttf');
+}
+@font-face {
+  font-family: 'AnonymousPro';
+  src: url('/fonts/AnonymousPro-Regular.ttf');
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter_28pt-Regular.ttf');
+}
+
+@import 'tailwindcss';
+
+@theme {
+  --font-Caveat: 'Caveat', sans-serif;
+  --font-Roboto: 'Roboto', sans-serif;
+  --font-Pacifico: 'Pacifico', sans-serif;
+  --font-AnonymousPro: 'AnonymousPro', sans-serif;
+  --font-Inter: 'Inter', sans-serif;
+}
