@@ -1,20 +1,29 @@
-name: Deploy Sugar Website to GitHub Pages
+# Documentation: https://help.github.com/en/articles/workflow-syntax-for-github-actions
+# Documentation: https://www.npmjs.com/package/gh-pages
+
+name: Continuous Deployment
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
+    types: [closed]
+    branches: [main]
 
 jobs:
-  build-and-deploy:
+  deploy:
+    name: Build and Deploy app to GitHub Pages
+
     runs-on: ubuntu-latest
 
+    if: github.event.pull_request.merged == true || github.ref == 'refs/heads/main'
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Checkout the code base
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '22'
 
