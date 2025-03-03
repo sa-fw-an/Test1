@@ -12,7 +12,7 @@ export const projects: Project[] = [
     title: 'Sugar on a Stick',
     description: 'A live USB version of the Sugar platform',
     tags: ['Distribution', 'Portable'],
-    imageUrl: '/assets/Images/SOAS.jpeg',
+    imageUrl: 'assets/Images/SOAS.jpeg',
     link: '/projects/sugar-on-a-stick',
   },
   {
@@ -20,7 +20,7 @@ export const projects: Project[] = [
     description:
       'GSOC is a global program focused on bringing more student developers into open source software development',
     tags: ['Community', 'Development'],
-    imageUrl: '/assets/Images/GSOC.png',
+    imageUrl: 'assets/Images/GSOC.png',
     link: '/projects/gsoc',
   },
   {
@@ -28,7 +28,7 @@ export const projects: Project[] = [
     description: 'A programming environment for exploring musical concepts',
     tags: ['Education', 'Creative'],
     progress: 75,
-    imageUrl: '/assets/Images/default-project.png', // Added a default image
+    imageUrl: 'assets/Images/default-project.png', // Added a default image
     link: '/projects/music-blocks',
   },
   {
@@ -36,7 +36,7 @@ export const projects: Project[] = [
     description: 'Web implementation of the Sugar platform for modern browsers',
     tags: ['Web', 'Mobile'],
     progress: 80,
-    imageUrl: '/assets/Images/default-project.png', // Added a default image
+    imageUrl: 'assets/Images/default-project.png', // Added a default image
     link: '/projects/sugarizer',
   },
 ];
