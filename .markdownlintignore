@@ -1,0 +1,2 @@
+src/constants/posts/**/*.md
+node_modules/**/*.md
