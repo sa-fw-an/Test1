@@ -45,7 +45,7 @@ export const socialLinks = [
   },
   {
     name: 'Medium',
-    href: 'https://medium.com/@sugarlabs ',
+    href: 'https://medium.com/@sugarlabs',
     icon: MediumIcon,
   },
 ];

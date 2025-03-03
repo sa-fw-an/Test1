@@ -16,14 +16,6 @@ const aboutItems: MenuItem[] = [
   { label: 'FAQs', path: '/faqs' },
 ];
 
-const newsItems: MenuItem[] = [
-  { label: 'Community News', path: '/community-news' },
-  { label: 'Events', path: '/events' },
-  { label: 'Press Release', path: '/press-release' },
-  { label: 'Sugar Stories', path: '/sugar-stories' },
-];
-
 export const dropdowns: Record<string, DropdownItem> = {
   about: { label: 'About', items: aboutItems },
-  news: { label: 'News', items: newsItems },
 };

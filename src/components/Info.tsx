@@ -1,18 +1,28 @@
+import React from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { motion } from 'framer-motion';
 import {
   heroContent,
   images,
   ImageConfig,
   mission,
 } from '../constants/Info.ts';
+import {
+  fadeIn,
+  simpleFadeIn,
+  subtleRise,
+  simpleGridContainer,
+} from '../styles/Animations';
 
 const Info: React.FC = () => {
   const renderImageCard = (key: string, image: ImageConfig) => (
-    <div
+    <motion.div
       key={key}
       className="group relative rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl 
                  transition-all duration-500 bg-white"
+      variants={subtleRise}
+      whileHover="hover"
     >
       <img
         src={image.src}
@@ -24,14 +34,14 @@ const Info: React.FC = () => {
       {image.caption && (
         <div
           className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 
-                       to-transparent p-4 md:p-8"
+                   to-transparent p-4 md:p-8"
         >
           <p className="text-white font-medium text-lg md:text-xl">
             {image.caption}
           </p>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 
   const renderCarouselItem = (key: string, image: ImageConfig) => (
@@ -45,7 +55,7 @@ const Info: React.FC = () => {
       {image.caption && (
         <div
           className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 
-                       to-transparent p-4"
+                   to-transparent p-4"
         >
           <p className="text-white font-normal text-base">{image.caption}</p>
         </div>
@@ -59,10 +69,14 @@ const Info: React.FC = () => {
         <main className="max-w-7xl mx-auto px-4 md:px-6 py-12 space-y-20">
           {/* Hero Section */}
           <section className="container mx-auto px-4 py-8 max-w-7xl">
-            <div
+            <motion.div
               className="relative mb-8 rounded-3xl overflow-hidden shadow-2xl 
-                         transform hover:scale-[1.01] transition-all duration-500 
-                         ease-out bg-white"
+                       transform hover:scale-[1.01] transition-all duration-500 
+                       ease-out bg-white"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={simpleFadeIn}
             >
               <img
                 src={images.main.src}
@@ -71,11 +85,15 @@ const Info: React.FC = () => {
               />
               <div
                 className="absolute inset-0 bg-gradient-to-r from-black/70 
-                           via-black/50 to-transparent"
+                         via-black/50 to-transparent"
               />
-              <div
+              <motion.div
                 className="absolute top-1/2 left-2 md:left-12 transform -translate-y-1/2 
-                           text-white max-w-2xl"
+                         text-white max-w-2xl"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={subtleRise}
               >
                 <h1
                   className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 md:mb-8 
@@ -89,18 +107,30 @@ const Info: React.FC = () => {
                 >
                   {heroContent.description}
                 </p>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
             {/* Desktop Image Grid */}
-            <div className="hidden md:grid grid-cols-1 md:grid-cols-3 gap-4">
+            <motion.div
+              className="hidden md:grid grid-cols-1 md:grid-cols-3 gap-4"
+              variants={simpleGridContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.1 }}
+            >
               {Object.entries(images)
                 .filter(([key]) => key.startsWith('bottom'))
                 .map(([key, image]) => renderImageCard(key, image))}
-            </div>
+            </motion.div>
 
             {/* Mobile Carousel */}
-            <div className="md:hidden">
+            <motion.div
+              className="md:hidden"
+              variants={fadeIn}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
               <Carousel
                 showThumbs={false}
                 showStatus={false}
@@ -117,34 +147,41 @@ const Info: React.FC = () => {
                   .filter(([key]) => key.startsWith('bottom'))
                   .map(([key, image]) => renderCarouselItem(key, image))}
               </Carousel>
-            </div>
+            </motion.div>
           </section>
 
           {/* Mission Section */}
-          <section className="grid md:grid-cols-2 gap-10 md:gap-20 items-center">
+          <motion.section
+            className="grid md:grid-cols-2 gap-10 md:gap-20 items-center"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={simpleFadeIn}
+          >
             <div className="space-y-8 md:space-y-10">
               <div
                 className="inline-block px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r 
-                           from-red-500/10 to-orange-500/10 rounded-full"
+                         from-red-500/10 to-orange-500/10 rounded-full"
               >
                 <span
                   className="text-4xs md:text-sm font-bold text-red-600 tracking-wider 
-                             uppercase"
+                           uppercase"
                 >
                   Empowering Young Learners
                 </span>
               </div>
-              <h2
+              <motion.h2
                 className="text-4xl md:text-5xl lg:text-6xl font-black space-y-2 
-                           font-display tracking-tight"
+                         font-display tracking-tight"
+                variants={subtleRise}
               >
-                <span className=" font-bold tracking-wider font-Caveat text-8xl">
+                <span className="font-bold tracking-wider font-Caveat text-8xl">
                   Our Mission?
                 </span>
                 <div>
                   <div
                     className="text-transparent bg-clip-text bg-gradient-to-r 
-                                from-red-500 to-orange-500 font-Caveat text-8xl"
+                              from-red-500 to-orange-500 font-Caveat text-8xl"
                   >
                     Authentic
                   </div>
@@ -152,11 +189,14 @@ const Info: React.FC = () => {
                   <br />
                   <span className="font-semibold">Solving</span>
                 </div>
-              </h2>
+              </motion.h2>
 
-              <h4 className="text-lg md:text-xl font-bold text-gray-800">
+              <motion.h4
+                className="text-lg md:text-xl font-bold text-gray-800"
+                variants={subtleRise}
+              >
                 Igniting Curiosity through Project Based Learning
-              </h4>
+              </motion.h4>
 
               <p className="text-gray-600 text-base md:text-lg font-Roboto">
                 Empowering Young Minds with Hands-on Learning, Transforming
@@ -164,14 +204,15 @@ const Info: React.FC = () => {
               </p>
             </div>
 
-            <div className="relative">
-              <div className="  bg-auto rounded-2xl overflow-hidden shadow-xl">
+            <motion.div className="relative" variants={subtleRise}>
+              <div className="bg-auto rounded-2xl overflow-hidden shadow-xl">
                 {/* Card on Top Left */}
-                <div
+                <motion.div
                   className="absolute top-2 left-2 md:top-2 md:left-2 bg-auto
-                      backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg 
-                      max-w-xs md:max-w-sm transform hover:scale-105 
-                      transition-all duration-300 ease-out z-10 border-2 border-white"
+                    backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg 
+                    max-w-xs md:max-w-sm transform hover:scale-105 
+                    transition-all duration-300 ease-out z-10 border-2 border-white"
+                  whileHover={{ scale: 1.05 }}
                 >
                   <h3 className="text-lg md:text-xl font-bold mb-1 md:mb-2n text-gray-900 font-AnonymousPro">
                     Project Based Learning
@@ -181,23 +222,25 @@ const Info: React.FC = () => {
                     project-based tools that enable creation and real-world
                     problem-solving.
                   </p>
-                </div>
+                </motion.div>
 
                 {/* Background Image */}
-                <img
+                <motion.img
                   src={mission.learnImage}
                   alt="Students learning"
                   className="w-full rounded-2xl transform hover:scale-105 
-                   transition-all duration-500 ease-out"
+                 transition-all duration-500 ease-out"
                   loading="lazy"
+                  whileHover={{ scale: 1.05 }}
                 />
 
                 {/* Card on Bottom Right */}
-                <div
+                <motion.div
                   className="absolute bottom-4 right-4 md:bottom-2 md:right-2 bg-auto
-                      backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg 
-                      max-w-xs md:max-w-sm transform hover:scale-105 
-                      transition-all duration-300 ease-out z-10 border-2 border-white"
+                    backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg 
+                    max-w-xs md:max-w-sm transform hover:scale-105 
+                    transition-all duration-300 ease-out z-10 border-2 border-white"
+                  whileHover={{ scale: 1.05 }}
                 >
                   <h3 className="text-md md:text-lg font-bold mb-1 md:mb-2 text-amber-100 font-AnonymousPro">
                     Challenge and Fun: It's hard fun.
@@ -206,10 +249,10 @@ const Info: React.FC = () => {
                     Bringing interactive, meaningful experiences that make
                     education exciting and impactful.
                   </p>
-                </div>
+                </motion.div>
               </div>
-            </div>
-          </section>
+            </motion.div>
+          </motion.section>
         </main>
       </div>
     </>

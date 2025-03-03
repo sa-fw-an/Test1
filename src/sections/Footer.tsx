@@ -5,7 +5,7 @@ import {
   resourceLinks,
   developmentLinks,
   quickLinks,
-} from '../constants/Footer';
+} from '@/constants/Footer';
 
 const Footer = () => {
   return (

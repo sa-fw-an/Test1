@@ -1,5 +1,5 @@
-import Header from '../sections/Header';
-import Footer from '../sections/Footer';
+import Header from '@/sections/Header';
+import Footer from '@/sections/Footer';
 
 const JoinDevelopment = () => {
   return (

@@ -3,7 +3,7 @@ import TurtleBlocksImg from '/assets/Cards/TurtleBlocks.png';
 import SugarizerImg from '/assets/Cards/Sugarizer.png';
 import BootableDriveImg from '/assets/Cards/BootableDrive.png';
 import DesktopInitializationImg from '/assets/Cards/DesktopInitialization.png';
-import TriquelImg from '/assets/Cards/Triquel.png';
+import TrisquelImg from '/assets/Cards/Trisquel.png';
 import RaspberryPiImg from '/assets/Cards/RaspberryPi.png';
 import FlatpackImg from '/assets/Cards/Flatpack.png';
 import Finance from '/assets/Cards/activity-finance.svg';
@@ -14,6 +14,7 @@ import Words from '/assets/Cards/activity-words.svg';
 import Ruler from '/assets/Cards/activity-ruler.svg';
 import StarChart from '/assets/Cards/activity-star-chart.svg';
 import Recall from '/assets/Cards/activity-recall.svg';
+import Physics from '/assets/Cards/activity-physics.svg';
 
 interface CardDataType {
   title: string;
@@ -83,14 +84,14 @@ export const TryCardData: CardDataType[] = [
     gradientClass: 'bg-gradient-to-r from-blue-700 to-blue-500',
   },
   {
-    title: 'Try Triquel for full freedom',
+    title: 'Try Trisquel for full freedom',
     description:
-      'Get all the benefits of a bootable/installation frive on the fully free and well maintained Triquel distro.',
-    tryNowText: 'Try Triquel now!',
+      'Get all the benefits of a bootable/installation frive on the fully free and well maintained Trisquel distro.',
+    tryNowText: 'Try Trisquel now!',
     tryNowHref: '#',
-    learnMoreText: 'Learn more about Triquel',
+    learnMoreText: 'Learn more about Trisquel',
     learnMoreHref: '#',
-    imagePath: TriquelImg,
+    imagePath: TrisquelImg,
     gradientClass: 'bg-gradient-to-r from-blue-700 to-blue-900',
   },
   {
@@ -172,5 +173,12 @@ export const Activities = [
     icon: Recall,
     buttonText: 'Get Recall',
     href: 'https://v4.activities.sugarlabs.org/app/org.sugarlabs.RecallActivity.html',
+  },
+  {
+    title: 'Physics',
+    description: 'Physical world simulator and playground',
+    icon: Physics,
+    buttonText: 'Get Physics',
+    href: 'https://activities.sugarlabs.org/en-US/sugar/addon/4193',
   },
 ];

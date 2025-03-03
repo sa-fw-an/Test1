@@ -157,18 +157,22 @@ const Header: React.FC = () => {
               ))}
 
               {/* Navigation Links */}
-              {['Products', 'Donate', 'Join Development', 'Volunteer'].map(
-                (item) => (
-                  <Link
-                    key={item}
-                    to={`/${item.toLowerCase().replace(' ', '-')}`}
-                    className="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium rounded-md
+              {[
+                'News',
+                'Products',
+                'Donate',
+                'Join Development',
+                'Volunteer',
+              ].map((item) => (
+                <Link
+                  key={item}
+                  to={`/${item.toLowerCase().replace(' ', '-')}`}
+                  className="px-3 py-2 text-gray-700 hover:text-blue-600 font-medium rounded-md
                             transition-all duration-200 hover:bg-gray-50"
-                  >
-                    {item}
-                  </Link>
-                ),
-              )}
+                >
+                  {item}
+                </Link>
+              ))}
 
               {/* CTA Button */}
               <Link
@@ -271,6 +275,7 @@ const Header: React.FC = () => {
                       )}
 
                       {[
+                        'News',
                         'Products',
                         'Donate',
                         'Join Development',

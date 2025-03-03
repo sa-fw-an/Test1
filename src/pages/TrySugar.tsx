@@ -1,6 +1,6 @@
-import Header from '../sections/Header';
-import Footer from '../sections/Footer';
-import Try from '../components/Try';
+import Header from '@/sections/Header';
+import Footer from '@/sections/Footer';
+import Try from '@/components/Try';
 
 const TrySugar = () => {
   return (

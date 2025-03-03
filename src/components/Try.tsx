@@ -1,6 +1,16 @@
 import React, { useState, useRef, TouchEvent } from 'react';
-import { TryCard, ActivityCard } from './TryCard';
-import { TryCardData, Activities } from '../constants/TryCardData';
+import { TryCard, ActivityCard } from '@/components/TryCard';
+import { TryCardData, Activities } from '@/constants/TryCardData';
+import { motion } from 'framer-motion';
+import {
+  fadeIn,
+  slideInLeft,
+  slideInRight,
+  slideInBottom,
+  staggerContainer,
+  subtleRise,
+  headerReveal,
+} from '@/styles/Animations';
 
 const Try: React.FC = () => {
   const [currentCard, setCurrentCard] = useState(0);
@@ -49,29 +59,48 @@ const Try: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <main className="flex-grow bg-[#F6DEC9] p-4 md:p-16 mt-10">
+    <motion.div
+      className="min-h-screen flex flex-col"
+      initial="hidden"
+      animate="visible"
+      variants={fadeIn}
+    >
+      <motion.main className="flex-grow bg-[#F6DEC9] p-4 md:p-16">
         <div className="max-w-6xl mx-auto space-y-8">
-          <header className="space-y-6">
-            <h1 className="text-5xl md:text-7xl font-bold flex flex-col sm:flex-row items-start sm:items-center">
-              <span className="text-white bg-[#975555] px-2 py-1 rounded-lg inline-block">
+          <motion.header className="space-y-6" variants={staggerContainer}>
+            <motion.h1
+              className="text-5xl md:text-7xl font-bold flex flex-col sm:flex-row items-start sm:items-center"
+              variants={headerReveal}
+            >
+              <motion.span
+                className="text-white bg-[#975555] px-2 py-1 rounded-lg inline-block"
+                variants={slideInLeft}
+              >
                 EXPERIENCE
-              </span>
-              <span className="text-black sm:ml-2 mt-2 sm:mt-0">SUGAR.</span>
-            </h1>
-            <div className="space-y-4">
-              <p className="text-[#975555] text-2xl md:text-4xl font-bold leading-tight">
+              </motion.span>
+              <motion.span
+                className="text-black sm:ml-2 mt-2 sm:mt-0"
+                variants={slideInRight}
+              >
+                SUGAR
+              </motion.span>
+            </motion.h1>
+            <motion.div className="space-y-4" variants={subtleRise}>
+              <motion.p
+                className="text-[#975555] text-2xl md:text-4xl font-bold leading-tight"
+                variants={fadeIn}
+              >
                 "Our educational tools can be experienced in a number of ways.
                 Try the ones that are best for you!"
-              </p>
-              <i className="text-xs text-gray-700">
+              </motion.p>
+              <motion.i className="text-xs text-gray-700" variants={fadeIn}>
                 Whether you enjoy hands-on activities, visual learning, or
                 interactive coding, there's something for everyone. Explore
                 creative tools, enhance your problem-solving skills, and make
                 learning more engaging.
-              </i>
-            </div>
-          </header>
+              </motion.i>
+            </motion.div>
+          </motion.header>
 
           {/* Desktop Grid */}
           <div className="hidden md:grid md:grid-cols-3 gap-8">
@@ -183,27 +212,47 @@ const Try: React.FC = () => {
           </div>
         </div>
 
-        <div className="max-w-6xl mx-auto space-y-8 mt-16">
-          <header className="space-y-6">
-            <h1 className="text-5xl md:text-7xl font-bold flex flex-col sm:flex-row items-start sm:items-center">
-              <span className="text-white bg-[#975555] px-2 py-1 rounded-lg inline-block">
+        <motion.div
+          className="max-w-6xl mx-auto space-y-8 mt-16"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={slideInBottom}
+        >
+          <motion.header className="space-y-6" variants={staggerContainer}>
+            <motion.h1
+              className="text-5xl md:text-7xl font-bold flex flex-col sm:flex-row items-start sm:items-center"
+              variants={headerReveal}
+            >
+              <motion.span
+                className="text-white bg-[#975555] px-2 py-1 rounded-lg inline-block"
+                variants={slideInLeft}
+              >
                 ALREADY USING
-              </span>
-              <span className="text-black sm:ml-2 mt-2 sm:mt-0">SUGAR?</span>
-            </h1>
-            <div className="space-y-4">
-              <p className="text-[#975555] text-2xl md:text-4xl font-bold leading-tight">
+              </motion.span>
+              <motion.span
+                className="text-black sm:ml-2 mt-2 sm:mt-0"
+                variants={slideInRight}
+              >
+                SUGAR?
+              </motion.span>
+            </motion.h1>
+            <motion.div className="space-y-4" variants={subtleRise}>
+              <motion.p
+                className="text-[#975555] text-2xl md:text-4xl font-bold leading-tight"
+                variants={fadeIn}
+              >
                 "We have many activities for you!"
-              </p>
-              <i className="text-xs text-gray-700">
+              </motion.p>
+              <motion.i className="text-xs text-gray-700" variants={fadeIn}>
                 The Sugar Learning platform is a complete environment for
                 teaching and learning, which includes individual activities. If
                 you're already using the Sugar Desktop Environment, then you can
                 install from the activities below, which has links to some of
                 our most popular activities.
-              </i>
-            </div>
-          </header>
+              </motion.i>
+            </motion.div>
+          </motion.header>
 
           {/* Desktop Grid */}
           <div className="hidden md:grid md:grid-cols-3 gap-8">
@@ -313,9 +362,9 @@ const Try: React.FC = () => {
               ))}
             </div>
           </div>
-        </div>
-      </main>
-    </div>
+        </motion.div>
+      </motion.main>
+    </motion.div>
   );
 };
 
