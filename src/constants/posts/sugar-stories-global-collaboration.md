@@ -6,6 +6,7 @@ date: "2025-01-05"
 slug: "connected-through-sugar-classroom-partnership"
 author: "Luis Ramirez and Jennifer Thompson"
 tags: "collaboration,global,cultural-exchange,student-projects"
+image: "assets/Images/learn.jpg"
 ---
 
 # Connected Through Sugar: Our Rural-Urban Classroom Partnership
