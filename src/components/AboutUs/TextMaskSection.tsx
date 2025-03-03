@@ -40,7 +40,7 @@ const TextMaskSection = () => {
           <motion.div
             className="absolute inset-0 w-full h-full"
             style={{
-              backgroundImage: "url('/assets/Images/teach.jpg')",
+              backgroundImage: "url('assets/Images/teach.jpg')",
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               filter: 'contrast(1.1) saturate(1.2)',
