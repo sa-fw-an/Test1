@@ -28,7 +28,7 @@ export const projects: Project[] = [
     description: 'A programming environment for exploring musical concepts',
     tags: ['Education', 'Creative'],
     progress: 75,
-    imageUrl: 'assets/Images/default-project.png', // Added a default image
+    imageUrl: 'assets/Images/default-project.png',
     link: '/projects/music-blocks',
   },
   {
@@ -36,7 +36,7 @@ export const projects: Project[] = [
     description: 'Web implementation of the Sugar platform for modern browsers',
     tags: ['Web', 'Mobile'],
     progress: 80,
-    imageUrl: 'assets/Images/default-project.png', // Added a default image
+    imageUrl: 'assets/Images/default-project.png',
     link: '/projects/sugarizer',
   },
 ];

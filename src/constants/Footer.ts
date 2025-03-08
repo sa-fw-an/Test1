@@ -56,7 +56,7 @@ export const resourceLinks = [
   { to: '/school-administrators', text: 'For School Administrators' },
   { to: '/parents', text: 'For Parents' },
   { to: '/join-development', text: 'For Developers' },
-  { to: '/sugar-stories', text: 'Sugar Stories' },
+  { to: '/news/sugar-stories', text: 'Sugar Stories' },
   { to: '/music-blocks', text: 'Music Blocks' },
   { to: '/turtle-blocks', text: 'Turtle Blocks JS' },
 ];

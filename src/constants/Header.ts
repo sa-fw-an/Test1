@@ -10,7 +10,6 @@ export interface DropdownItem {
 
 const aboutItems: MenuItem[] = [
   { label: 'About Us', path: '/about-us' },
-  { label: 'Mission', path: '/mission' },
   { label: 'Leadership', path: '/leadership' },
   { label: 'Contact Us', path: '/contact-us' },
   { label: 'FAQs', path: '/faqs' },

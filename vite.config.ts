@@ -26,6 +26,20 @@ export default defineConfig({
         }
         warn(warning);
       },
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            // Split vendor code into separate chunks
+            return 'vendor';
+          }
+          if (id.includes('src/constants/posts')) {
+            // Split Posts related pages into a separate chunk
+            return 'posts';
+          }
+          // Add more custom chunking logic as needed
+        },
+      },
     },
+    chunkSizeWarningLimit: 1000, // Increase the limit as needed
   },
 });

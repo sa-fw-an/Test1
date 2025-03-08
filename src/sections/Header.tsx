@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { dropdowns } from '../constants/Header';
+import { dropdowns } from '@/constants/Header';
 import logo from '/assets/logo.svg';
 
 const Header: React.FC = () => {
@@ -39,6 +39,19 @@ const Header: React.FC = () => {
     setMenuOpen(false);
     setActiveDropdown(null);
   };
+
+  // Close dropdown when escape key is pressed
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setActiveDropdown(null);
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <>
