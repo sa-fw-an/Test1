@@ -1,4 +1,4 @@
-import { createHashRouter } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import MainPage from '@/pages/MainPage';
 import AboutUs from '@/pages/About/AboutUs';
 import Leadership from '@/pages/About/Leadership';
@@ -12,7 +12,7 @@ import Products from '@/pages/Products';
 import NewsPage from '@/pages/News/NewsPage';
 import NewsDetailPage from '@/pages/News/NewsDetailPage';
 
-const router = createHashRouter([
+const router = createBrowserRouter([
   { path: `/`, element: <MainPage /> },
   { path: `/about-us`, element: <AboutUs /> },
   { path: `/leadership`, element: <Leadership /> },
