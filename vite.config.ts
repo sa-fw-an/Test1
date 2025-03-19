@@ -32,9 +32,9 @@ export default defineConfig({
             // Split vendor code into separate chunks
             return 'vendor';
           }
-          if (id.includes('src/constants/posts')) {
-            // Split Posts related pages into a separate chunk
-            return 'posts';
+          if (id.includes('src/constants/MarkdownFiles')) {
+            // Split Markdown related pages into a separate chunk
+            return 'mdfiles';
           }
           // Add more custom chunking logic as needed
         },

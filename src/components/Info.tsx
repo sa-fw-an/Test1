@@ -2,18 +2,13 @@ import React from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { motion } from 'framer-motion';
-import {
-  heroContent,
-  images,
-  ImageConfig,
-  mission,
-} from '../constants/Info.ts';
+import { heroContent, images, ImageConfig, mission } from '@/constants/Info.ts';
 import {
   fadeIn,
   simpleFadeIn,
   subtleRise,
   simpleGridContainer,
-} from '../styles/Animations';
+} from '@/styles/Animations';
 
 const Info: React.FC = () => {
   const renderImageCard = (key: string, image: ImageConfig) => (
@@ -27,16 +22,16 @@ const Info: React.FC = () => {
       <img
         src={image.src}
         alt={image.alt}
-        className="w-full max-h-80 md:h-96 object-cover transform group-hover:scale-105 
+        className="w-full h-60 sm:h-72 md:h-80 lg:h-96 object-cover transform group-hover:scale-105 
                    transition-all duration-700 ease-out"
         loading="lazy"
       />
       {image.caption && (
         <div
           className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 
-                   to-transparent p-4 md:p-8"
+                   to-transparent p-3 sm:p-4 md:p-6 lg:p-8"
         >
-          <p className="text-white font-medium text-lg md:text-xl">
+          <p className="text-white font-medium text-sm sm:text-base md:text-lg lg:text-xl">
             {image.caption}
           </p>
         </div>
@@ -49,15 +44,17 @@ const Info: React.FC = () => {
       <img
         src={image.src}
         alt={image.alt}
-        className="w-full h-64 object-cover"
+        className="w-full h-48 sm:h-64 object-cover"
         loading="lazy"
       />
       {image.caption && (
         <div
           className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 
-                   to-transparent p-4"
+                   to-transparent p-3 sm:p-4"
         >
-          <p className="text-white font-normal text-base">{image.caption}</p>
+          <p className="text-white font-normal text-sm sm:text-base">
+            {image.caption}
+          </p>
         </div>
       )}
     </div>
@@ -66,11 +63,11 @@ const Info: React.FC = () => {
   return (
     <>
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white font-Inter">
-        <main className="max-w-7xl mx-auto px-4 md:px-6 py-12 space-y-20">
+        <main className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 py-8 sm:py-10 md:py-12 space-y-12 sm:space-y-16 md:space-y-20">
           {/* Hero Section */}
-          <section className="container mx-auto px-4 py-8 max-w-7xl">
+          <section className="container mx-auto px-2 sm:px-4 py-6 sm:py-8 max-w-7xl">
             <motion.div
-              className="relative mb-8 rounded-3xl overflow-hidden shadow-2xl 
+              className="relative mb-6 sm:mb-8 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl sm:shadow-2xl 
                        transform hover:scale-[1.01] transition-all duration-500 
                        ease-out bg-white"
               initial="hidden"
@@ -81,28 +78,28 @@ const Info: React.FC = () => {
               <img
                 src={images.main.src}
                 alt={images.main.alt}
-                className="w-full h-[500px] md:h-[700px] object-cover"
+                className="w-full h-[350px] sm:h-[400px] md:h-[500px] lg:h-[600px] xl:h-[700px] object-cover"
               />
               <div
                 className="absolute inset-0 bg-gradient-to-r from-black/70 
                          via-black/50 to-transparent"
               />
               <motion.div
-                className="absolute top-1/2 left-2 md:left-12 transform -translate-y-1/2 
-                         text-white max-w-2xl"
+                className="absolute top-1/2 left-2 sm:left-6 md:left-12 transform -translate-y-1/2 
+                         text-white max-w-xs sm:max-w-sm md:max-w-lg lg:max-w-2xl p-2 sm:p-0"
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={subtleRise}
               >
                 <h1
-                  className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 md:mb-8 
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-3 sm:mb-4 md:mb-6 lg:mb-8 
                            leading-tight tracking-tight animate-fade-in font-display"
                 >
                   {heroContent.title}
                 </h1>
                 <p
-                  className="text-lg md:text-xl lg:text-2xl leading-relaxed opacity-90 
+                  className="text-base sm:text-lg md:text-xl lg:text-2xl leading-relaxed opacity-90 
                            animate-fade-in-delayed font-light"
                 >
                   {heroContent.description}
@@ -112,7 +109,7 @@ const Info: React.FC = () => {
 
             {/* Desktop Image Grid */}
             <motion.div
-              className="hidden md:grid grid-cols-1 md:grid-cols-3 gap-4"
+              className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4"
               variants={simpleGridContainer}
               initial="hidden"
               whileInView="visible"
@@ -138,7 +135,7 @@ const Info: React.FC = () => {
                 autoPlay
                 interval={5000}
                 transitionTime={500}
-                className="rounded-2xl overflow-hidden"
+                className="rounded-xl sm:rounded-2xl overflow-hidden"
                 stopOnHover
                 swipeable
                 emulateTouch
@@ -152,36 +149,36 @@ const Info: React.FC = () => {
 
           {/* Mission Section */}
           <motion.section
-            className="grid md:grid-cols-2 gap-10 md:gap-20 items-center"
+            className="grid sm:grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 md:gap-16 lg:gap-20 items-center px-2 sm:px-4"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             variants={simpleFadeIn}
           >
-            <div className="space-y-8 md:space-y-10">
+            <div className="space-y-6 sm:space-y-8 md:space-y-10">
               <div
-                className="inline-block px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r 
+                className="inline-block px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 md:py-3 bg-gradient-to-r 
                          from-red-500/10 to-orange-500/10 rounded-full"
               >
                 <span
-                  className="text-4xs md:text-sm font-bold text-red-600 tracking-wider 
+                  className="text-xs sm:text-sm font-bold text-red-600 tracking-wider 
                            uppercase"
                 >
                   Empowering Young Learners
                 </span>
               </div>
               <motion.h2
-                className="text-4xl md:text-5xl lg:text-6xl font-black space-y-2 
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black space-y-1 sm:space-y-2 
                          font-display tracking-tight"
                 variants={subtleRise}
               >
-                <span className="font-bold tracking-wider font-Caveat text-8xl">
+                <span className="font-bold tracking-wider font-Caveat text-5xl sm:text-6xl md:text-7xl lg:text-8xl">
                   Our Mission?
                 </span>
                 <div>
                   <div
                     className="text-transparent bg-clip-text bg-gradient-to-r 
-                              from-red-500 to-orange-500 font-Caveat text-8xl"
+                              from-red-500 to-orange-500 font-Caveat text-5xl sm:text-6xl md:text-7xl lg:text-8xl"
                   >
                     Authentic
                   </div>
@@ -192,60 +189,60 @@ const Info: React.FC = () => {
               </motion.h2>
 
               <motion.h4
-                className="text-lg md:text-xl font-bold text-gray-800"
+                className="text-base sm:text-lg md:text-xl font-bold text-gray-800"
                 variants={subtleRise}
               >
                 Igniting Curiosity through Project Based Learning
               </motion.h4>
 
-              <p className="text-gray-600 text-base md:text-lg font-Roboto">
+              <p className="text-gray-600 text-sm sm:text-base md:text-lg font-Roboto">
                 Empowering Young Minds with Hands-on Learning, Transforming
                 Curiosity into Discovery and Innovation.
               </p>
             </div>
 
             <motion.div className="relative" variants={subtleRise}>
-              <div className="bg-auto rounded-2xl overflow-hidden shadow-xl">
+              <div className="bg-auto rounded-xl sm:rounded-2xl overflow-hidden shadow-lg sm:shadow-xl">
+                {/* Background Image */}
+                <motion.img
+                  src={mission.learnImage}
+                  alt="Students learning"
+                  className="w-full rounded-xl sm:rounded-2xl transform hover:scale-105 
+                 transition-all duration-500 ease-out"
+                  loading="lazy"
+                  whileHover={{ scale: 1.05 }}
+                />
+
                 {/* Card on Top Left */}
                 <motion.div
-                  className="absolute top-2 left-2 md:top-2 md:left-2 bg-auto
-                    backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg 
-                    max-w-xs md:max-w-sm transform hover:scale-105 
-                    transition-all duration-300 ease-out z-10 border-2 border-white"
+                  className="absolute top-2 left-2 bg-black/60
+                    backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 md:p-6 shadow-lg 
+                    max-w-[180px] sm:max-w-[220px] md:max-w-xs transform hover:scale-105 
+                    transition-all duration-300 ease-out z-10 border border-white/50"
                   whileHover={{ scale: 1.05 }}
                 >
-                  <h3 className="text-lg md:text-xl font-bold mb-1 md:mb-2n text-gray-900 font-AnonymousPro">
+                  <h3 className="text-base sm:text-lg md:text-xl font-bold mb-1 md:mb-2 text-gray-100 font-AnonymousPro">
                     Project Based Learning
                   </h3>
-                  <p className="text-white text-xs md:text-sm">
+                  <p className="text-white text-xs sm:text-sm leading-tight sm:leading-snug">
                     Empowering learners and educators with hands-on
                     project-based tools that enable creation and real-world
                     problem-solving.
                   </p>
                 </motion.div>
 
-                {/* Background Image */}
-                <motion.img
-                  src={mission.learnImage}
-                  alt="Students learning"
-                  className="w-full rounded-2xl transform hover:scale-105 
-                 transition-all duration-500 ease-out"
-                  loading="lazy"
-                  whileHover={{ scale: 1.05 }}
-                />
-
                 {/* Card on Bottom Right */}
                 <motion.div
-                  className="absolute bottom-4 right-4 md:bottom-2 md:right-2 bg-auto
-                    backdrop-blur-sm rounded-xl p-4 md:p-6 shadow-lg 
-                    max-w-xs md:max-w-sm transform hover:scale-105 
-                    transition-all duration-300 ease-out z-10 border-2 border-white"
+                  className="absolute bottom-2 right-2 bg-black/60
+                    backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 md:p-6 shadow-lg 
+                    max-w-[180px] sm:max-w-[220px] md:max-w-xs transform hover:scale-105 
+                    transition-all duration-300 ease-out z-10 border border-white/50"
                   whileHover={{ scale: 1.05 }}
                 >
-                  <h3 className="text-md md:text-lg font-bold mb-1 md:mb-2 text-amber-100 font-AnonymousPro">
+                  <h3 className="text-base sm:text-lg font-bold mb-1 text-amber-100 font-AnonymousPro">
                     Challenge and Fun: It's hard fun.
                   </h3>
-                  <p className="text-white text-xs md:text-sm leading-snug">
+                  <p className="text-white text-xs sm:text-sm leading-tight sm:leading-snug">
                     Bringing interactive, meaningful experiences that make
                     education exciting and impactful.
                   </p>

@@ -67,10 +67,13 @@ export const fetchMarkdownPosts = async (
   category?: string,
 ): Promise<Post[]> => {
   try {
-    const markdownFiles = import.meta.glob('@/constants/posts/*.md', {
-      query: '?raw',
-      import: 'default',
-    });
+    const markdownFiles = import.meta.glob(
+      '@/constants/MarkdownFiles/posts/*.md',
+      {
+        query: '?raw',
+        import: 'default',
+      },
+    );
 
     const allPosts: Post[] = [];
 

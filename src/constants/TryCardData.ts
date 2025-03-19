@@ -3,7 +3,7 @@ import TurtleBlocksImg from '/assets/Cards/TurtleBlocks.png';
 import SugarizerImg from '/assets/Cards/Sugarizer.png';
 import BootableDriveImg from '/assets/Cards/BootableDrive.png';
 import DesktopInitializationImg from '/assets/Cards/DesktopInitialization.png';
-import TrisquelImg from '/assets/Cards/Trisquel.png';
+import TrisquelImg from '/assets/Cards/Trisquel.svg';
 import RaspberryPiImg from '/assets/Cards/RaspberryPi.png';
 import FlatpackImg from '/assets/Cards/Flatpack.png';
 import Finance from '/assets/Cards/activity-finance.svg';
@@ -33,9 +33,9 @@ export const TryCardData: CardDataType[] = [
     description:
       'Create musical code with the browser-based visual programming language Music Blocks',
     tryNowText: 'Try Music Blocks now!',
-    tryNowHref: '#',
+    tryNowHref: 'https://musicblocks.sugarlabs.org/',
     learnMoreText: 'Learn more about Music Blocks',
-    learnMoreHref: '#',
+    learnMoreHref: '/musicblocks',
     imagePath: MusicBlocksImg,
     gradientClass: 'bg-gradient-to-r from-blue-700 to-blue-500',
   },
@@ -44,9 +44,9 @@ export const TryCardData: CardDataType[] = [
     description:
       'Explore math and computation through beautiful, artful and creative geometry.',
     tryNowText: 'Try Turtle Blocks now!',
-    tryNowHref: '#',
+    tryNowHref: 'https://turtle.sugarlabs.org/',
     learnMoreText: 'Learn more about Turtle Blocks',
-    learnMoreHref: '#',
+    learnMoreHref: '/turtleblocks',
     imagePath: TurtleBlocksImg,
     gradientClass: 'bg-gradient-to-r from-pink-600 to-blue-500',
   },
@@ -55,9 +55,9 @@ export const TryCardData: CardDataType[] = [
     description:
       'Get a taste of Sugar with Sugarizer, which opens in your browser with no installation.',
     tryNowText: 'Try Sugarizer now!',
-    tryNowHref: '#',
+    tryNowHref: 'https://sugarizer.org/',
     learnMoreText: 'Learn more about Sugarizer',
-    learnMoreHref: '#',
+    learnMoreHref: '/sugarizer',
     imagePath: SugarizerImg,
     gradientClass: 'bg-gradient-to-r from-yellow-400 to-green-500',
   },
@@ -66,9 +66,9 @@ export const TryCardData: CardDataType[] = [
     description:
       'With Sugar a Stick (SOAS), you can experience the full Sugar Learning Platform on any computer at any time from a bootable thumb drive',
     tryNowText: 'Try Bootable drive now!',
-    tryNowHref: '#',
+    tryNowHref: 'https://fedoraproject.org/spins/soas/download/',
     learnMoreText: 'Learn more about Bootable Drive',
-    learnMoreHref: '#',
+    learnMoreHref: '/bootablesoas',
     imagePath: BootableDriveImg,
     gradientClass: 'bg-gradient-to-r from-gray-900 to-gray-400',
   },
@@ -77,9 +77,9 @@ export const TryCardData: CardDataType[] = [
     description:
       'Sugar Learning platform can be installed as a full operating system on ost desktop and laptop computers.',
     tryNowText: 'Try Desktop Installation now!',
-    tryNowHref: '#',
+    tryNowHref: 'https://fedoraproject.org/spins/soas/download/',
     learnMoreText: 'Learn more about Installation',
-    learnMoreHref: '#',
+    learnMoreHref: '/bootablesoas',
     imagePath: DesktopInitializationImg,
     gradientClass: 'bg-gradient-to-r from-blue-700 to-blue-500',
   },
@@ -88,9 +88,9 @@ export const TryCardData: CardDataType[] = [
     description:
       'Get all the benefits of a bootable/installation frive on the fully free and well maintained Trisquel distro.',
     tryNowText: 'Try Trisquel now!',
-    tryNowHref: '#',
+    tryNowHref: 'https://trisquel.info/en/download',
     learnMoreText: 'Learn more about Trisquel',
-    learnMoreHref: '#',
+    learnMoreHref: '/trisquel',
     imagePath: TrisquelImg,
     gradientClass: 'bg-gradient-to-r from-blue-700 to-blue-900',
   },
@@ -98,9 +98,9 @@ export const TryCardData: CardDataType[] = [
     title: 'Try Sugar on Raspberry Pi',
     description: 'The full Sugar environment on a Raspberry P.(RPk)',
     tryNowText: 'Try Raspberry Pi now!',
-    tryNowHref: '#',
+    tryNowHref: 'https://wiki.sugarlabs.org/go/Raspbian',
     learnMoreText: 'Learn more about Raspberry Pi',
-    learnMoreHref: '#',
+    learnMoreHref: '/raspberry',
     imagePath: RaspberryPiImg,
     gradientClass: 'bg-gradient-to-r from-red-600 to-green-500',
   },
@@ -109,9 +109,9 @@ export const TryCardData: CardDataType[] = [
     description:
       'Create musical code with the browser based visual programming language Music Blocks',
     tryNowText: 'Try Flatpack now!',
-    tryNowHref: '#',
+    tryNowHref: 'https://flathub.org/apps/search?q=sugar%20labs',
     learnMoreText: 'Learn more about Flatpack',
-    learnMoreHref: '#',
+    learnMoreHref: '',
     imagePath: FlatpackImg,
     gradientClass: 'bg-gradient-to-r from-gray-400 to-gray-900',
   },

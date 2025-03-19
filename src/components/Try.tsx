@@ -19,6 +19,7 @@ const Try: React.FC = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [currentActivity, setCurrentActivity] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const activityCarouselRef = useRef<HTMLDivElement>(null);
 
   const handleSwipe = (
     direction: 'next' | 'prev',
@@ -65,11 +66,14 @@ const Try: React.FC = () => {
       animate="visible"
       variants={fadeIn}
     >
-      <motion.main className="flex-grow bg-[#F6DEC9] p-4 md:p-16">
-        <div className="max-w-6xl mx-auto space-y-8">
-          <motion.header className="space-y-6" variants={staggerContainer}>
+      <motion.main className="flex-grow bg-[#F6DEC9] px-3 sm:px-4 md:px-8 lg:px-16 py-6 sm:py-8 md:py-12 lg:py-16">
+        <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
+          <motion.header
+            className="space-y-3 sm:space-y-4 md:space-y-6"
+            variants={staggerContainer}
+          >
             <motion.h1
-              className="text-5xl md:text-7xl font-bold flex flex-col sm:flex-row items-start sm:items-center"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold flex flex-col sm:flex-row items-start sm:items-center"
               variants={headerReveal}
             >
               <motion.span
@@ -79,21 +83,27 @@ const Try: React.FC = () => {
                 EXPERIENCE
               </motion.span>
               <motion.span
-                className="text-black sm:ml-2 mt-2 sm:mt-0"
+                className="text-black sm:ml-2 mt-1 sm:mt-0"
                 variants={slideInRight}
               >
                 SUGAR
               </motion.span>
             </motion.h1>
-            <motion.div className="space-y-4" variants={subtleRise}>
+            <motion.div
+              className="space-y-2 sm:space-y-3 md:space-y-4"
+              variants={subtleRise}
+            >
               <motion.p
-                className="text-[#975555] text-2xl md:text-4xl font-bold leading-tight"
+                className="text-[#975555] text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight"
                 variants={fadeIn}
               >
                 "Our educational tools can be experienced in a number of ways.
                 Try the ones that are best for you!"
               </motion.p>
-              <motion.i className="text-xs text-gray-700" variants={fadeIn}>
+              <motion.i
+                className="text-xs md:text-sm text-gray-700 block"
+                variants={fadeIn}
+              >
                 Whether you enjoy hands-on activities, visual learning, or
                 interactive coding, there's something for everyone. Explore
                 creative tools, enhance your problem-solving skills, and make
@@ -103,15 +113,15 @@ const Try: React.FC = () => {
           </motion.header>
 
           {/* Desktop Grid */}
-          <div className="hidden md:grid md:grid-cols-3 gap-8">
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
             {TryCardData.map((card, index) => (
               <TryCard key={index} {...card} />
             ))}
           </div>
 
           {/* Mobile Carousel */}
-          <div className="md:hidden ml-[-1rem] mr-[-1rem]">
-            <div className="relative px-4">
+          <div className="md:hidden -mx-3 sm:-mx-2">
+            <div className="relative px-3 sm:px-4">
               <div
                 ref={carouselRef}
                 className="overflow-hidden touch-pan-x"
@@ -147,17 +157,17 @@ const Try: React.FC = () => {
                 </div>
               </div>
 
-              {/* Navigation Buttons */}
-              <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between pointer-events-none">
+              {/* Navigation Buttons - Positioned to avoid overlap with content */}
+              <div className="absolute top-1/2 -translate-y-1/2 left-1 right-1 flex justify-between pointer-events-none">
                 <button
                   onClick={() =>
                     handleSwipe('prev', setCurrentCard, TryCardData.length)
                   }
-                  className="pointer-events-auto p-3 bg-white/80 text-[#975555] rounded-full shadow-lg hover:bg-white transition-all"
+                  className="pointer-events-auto p-2 sm:p-3 bg-white/80 text-[#975555] rounded-full shadow-lg hover:bg-white transition-all"
                   aria-label="Previous"
                 >
                   <svg
-                    className="w-6 h-6"
+                    className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -174,11 +184,11 @@ const Try: React.FC = () => {
                   onClick={() =>
                     handleSwipe('next', setCurrentCard, TryCardData.length)
                   }
-                  className="pointer-events-auto p-3 bg-white/80 text-[#975555] rounded-full shadow-lg hover:bg-white transition-all"
+                  className="pointer-events-auto p-2 sm:p-3 bg-white/80 text-[#975555] rounded-full shadow-lg hover:bg-white transition-all"
                   aria-label="Next"
                 >
                   <svg
-                    className="w-6 h-6"
+                    className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -195,14 +205,14 @@ const Try: React.FC = () => {
             </div>
 
             {/* Dots Indicator */}
-            <div className="flex justify-center space-x-2 mt-6">
+            <div className="flex justify-center space-x-1 sm:space-x-2 mt-4 sm:mt-6">
               {TryCardData.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentCard(index)}
-                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                  className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${
                     currentCard === index
-                      ? 'bg-[#975555] w-6'
+                      ? 'bg-[#975555] w-4 sm:w-6'
                       : 'bg-[#975555]/30'
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
@@ -213,15 +223,18 @@ const Try: React.FC = () => {
         </div>
 
         <motion.div
-          className="max-w-6xl mx-auto space-y-8 mt-16"
+          className="max-w-6xl mx-auto space-y-6 sm:space-y-8 mt-12 sm:mt-14 md:mt-16"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.1 }}
           variants={slideInBottom}
         >
-          <motion.header className="space-y-6" variants={staggerContainer}>
+          <motion.header
+            className="space-y-3 sm:space-y-4 md:space-y-6"
+            variants={staggerContainer}
+          >
             <motion.h1
-              className="text-5xl md:text-7xl font-bold flex flex-col sm:flex-row items-start sm:items-center"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold flex flex-col sm:flex-row items-start sm:items-center"
               variants={headerReveal}
             >
               <motion.span
@@ -231,20 +244,26 @@ const Try: React.FC = () => {
                 ALREADY USING
               </motion.span>
               <motion.span
-                className="text-black sm:ml-2 mt-2 sm:mt-0"
+                className="text-black sm:ml-2 mt-1 sm:mt-0"
                 variants={slideInRight}
               >
                 SUGAR?
               </motion.span>
             </motion.h1>
-            <motion.div className="space-y-4" variants={subtleRise}>
+            <motion.div
+              className="space-y-2 sm:space-y-3 md:space-y-4"
+              variants={subtleRise}
+            >
               <motion.p
-                className="text-[#975555] text-2xl md:text-4xl font-bold leading-tight"
+                className="text-[#975555] text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight"
                 variants={fadeIn}
               >
                 "We have many activities for you!"
               </motion.p>
-              <motion.i className="text-xs text-gray-700" variants={fadeIn}>
+              <motion.i
+                className="text-xs md:text-sm text-gray-700 block"
+                variants={fadeIn}
+              >
                 The Sugar Learning platform is a complete environment for
                 teaching and learning, which includes individual activities. If
                 you're already using the Sugar Desktop Environment, then you can
@@ -255,17 +274,17 @@ const Try: React.FC = () => {
           </motion.header>
 
           {/* Desktop Grid */}
-          <div className="hidden md:grid md:grid-cols-3 gap-8">
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
             {Activities.map((activity, index) => (
               <ActivityCard key={index} {...activity} />
             ))}
           </div>
 
           {/* Mobile Carousel */}
-          <div className="md:hidden ml-[-1rem] mr-[-1rem]">
-            <div className="relative px-4">
+          <div className="md:hidden -mx-3 sm:-mx-2">
+            <div className="relative px-3 sm:px-4">
               <div
-                ref={carouselRef}
+                ref={activityCarouselRef}
                 className="overflow-hidden touch-pan-x"
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
@@ -300,16 +319,16 @@ const Try: React.FC = () => {
               </div>
 
               {/* Navigation Buttons */}
-              <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between pointer-events-none">
+              <div className="absolute top-1/2 -translate-y-1/2 left-1 right-1 flex justify-between pointer-events-none">
                 <button
                   onClick={() =>
                     handleSwipe('prev', setCurrentActivity, Activities.length)
                   }
-                  className="pointer-events-auto p-3 bg-white/80 text-[#975555] rounded-full shadow-lg hover:bg-white transition-all"
+                  className="pointer-events-auto p-2 sm:p-3 bg-white/80 text-[#975555] rounded-full shadow-lg hover:bg-white transition-all"
                   aria-label="Previous"
                 >
                   <svg
-                    className="w-6 h-6"
+                    className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -326,11 +345,11 @@ const Try: React.FC = () => {
                   onClick={() =>
                     handleSwipe('next', setCurrentActivity, Activities.length)
                   }
-                  className="pointer-events-auto p-3 bg-white/80 text-[#975555] rounded-full shadow-lg hover:bg-white transition-all"
+                  className="pointer-events-auto p-2 sm:p-3 bg-white/80 text-[#975555] rounded-full shadow-lg hover:bg-white transition-all"
                   aria-label="Next"
                 >
                   <svg
-                    className="w-6 h-6"
+                    className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -347,14 +366,14 @@ const Try: React.FC = () => {
             </div>
 
             {/* Dots Indicator */}
-            <div className="flex justify-center space-x-2 mt-6">
+            <div className="flex justify-center space-x-1 sm:space-x-2 mt-4 sm:mt-6">
               {Activities.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentActivity(index)}
-                  className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                  className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full transition-all duration-300 ${
                     currentActivity === index
-                      ? 'bg-[#975555] w-6'
+                      ? 'bg-[#975555] w-4 sm:w-6'
                       : 'bg-[#975555]/30'
                   }`}
                   aria-label={`Go to slide ${index + 1}`}

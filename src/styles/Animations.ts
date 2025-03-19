@@ -675,3 +675,351 @@ export const roadmapSectionAnimations = {
     transition: { duration: 0.3 },
   },
 };
+
+export const dividerVariants = {
+  hidden: { width: 0, opacity: 0 },
+  visible: {
+    width: '6rem',
+    opacity: 1,
+    transition: {
+      duration: 0.8,
+      delay: 0.3,
+      ease: 'easeOut',
+    },
+  },
+};
+
+export const faqPageAnimations = {
+  // Page section animations
+  pageSection: {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { duration: 0.6, ease: 'easeOut' },
+    },
+  },
+
+  // Text content animations
+  headingText: {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.7, ease: 'easeOut' },
+    },
+  },
+
+  paragraphText: {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.7, ease: 'easeOut', delay: 0.2 },
+    },
+  },
+
+  // Hero image animation
+  heroImage: {
+    hidden: { opacity: 0, x: 100 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.6, ease: 'easeOut' },
+    },
+    hover: {
+      scale: 1.03,
+      transition: { duration: 0.3 },
+    },
+  },
+
+  // Quick answers grid container
+  quickAnswersContainer: {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.1,
+      },
+    },
+  },
+
+  // Quick answer card animation
+  quickAnswerCard: {
+    hidden: { scale: 0.9, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: {
+        type: 'spring',
+        stiffness: 400,
+        damping: 10,
+      },
+    },
+    hover: {
+      scale: 1.05,
+      transition: {
+        type: 'spring',
+        stiffness: 400,
+        damping: 10,
+      },
+    },
+    tap: { scale: 0.95 },
+  },
+
+  // Icon in quick answer cards
+  quickAnswerIcon: {
+    hidden: { rotate: -10, scale: 0.9 },
+    visible: (index: number) => ({
+      rotate: 0,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        delay: index * 0.1,
+      },
+    }),
+  },
+
+  // FAQ container
+  faqContainer: {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3,
+      },
+    },
+  },
+
+  // FAQ item animation
+  faqItem: {
+    hidden: { y: 20, opacity: 0 },
+    visible: (index: number) => ({
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.8,
+        delay: index * 0.1,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    }),
+  },
+
+  // FAQ question button hover
+  faqQuestionButton: {
+    initial: {},
+    hover: {
+      x: 5,
+      transition: {
+        type: 'spring',
+        stiffness: 300,
+      },
+    },
+  },
+
+  // FAQ toggle icon animation
+  faqToggleIcon: (isOpen: boolean): Variants => ({
+    initial: { rotate: 0 },
+    animate: {
+      rotate: isOpen ? 180 : 0,
+      transition: { duration: 0.3 },
+    },
+  }),
+
+  // FAQ answer animation
+  faqAnswer: (isOpen: boolean): Variants => ({
+    initial: { height: 0, opacity: 0 },
+    animate: {
+      height: isOpen ? 'auto' : 0,
+      opacity: isOpen ? 1 : 0,
+      transition: { duration: 0.3 },
+    },
+  }),
+};
+export const teamSectionAnimations = {
+  section: {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: 'easeOut' },
+    },
+  },
+
+  heading: {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: 'easeOut', delay: 0.2 },
+    },
+  },
+
+  memberCard: {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.6, ease: 'easeOut' },
+    },
+  },
+
+  memberImage: {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.6, ease: 'easeOut', delay: 0.3 },
+    },
+  },
+};
+export const paragraphAnimations = {
+  section: {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: 'easeOut' },
+    },
+  },
+
+  text: {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.4, ease: 'easeOut' },
+    },
+  },
+
+  listItem: (index: number) => ({
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.4, delay: index * 0.1 },
+    },
+  }),
+
+  button: {
+    hover: {
+      scale: 1.05,
+      transition: { duration: 0.3 },
+    },
+  },
+};
+export const numberedCardAnimations = {
+  card: {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: 'easeOut' },
+    },
+    hover: {
+      scale: 1.05,
+      boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.2)',
+      transition: { duration: 0.3 },
+    },
+  },
+
+  numberCircle: {
+    hover: {
+      rotate: 10,
+      transition: { duration: 0.3 },
+    },
+  },
+
+  image: {
+    hover: {
+      scale: 1.02,
+      transition: { duration: 0.3 },
+    },
+  },
+};
+export const logoCardAnimations = {
+  card: {
+    hidden: { opacity: 0, y: 50 },
+    visible: (index: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: 'easeOut', delay: index * 0.15 },
+    }),
+    hover: {
+      scale: 1.05,
+      boxShadow: '0px 10px 20px rgba(0, 0, 0, 0.2)',
+      transition: { duration: 0.3 },
+    },
+  },
+
+  logoContainer: {
+    hover: {
+      rotate: 10,
+      transition: { duration: 0.3 },
+    },
+  },
+
+  button: {
+    hover: { scale: 1.1, transition: { duration: 0.2 } },
+    tap: { scale: 0.95 },
+  },
+};
+export const featureSectionAnimations = {
+  section: {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: 'easeOut' },
+    },
+  },
+
+  textContainer: {
+    hidden: { opacity: 0, x: -50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.8, ease: 'easeOut' },
+    },
+  },
+
+  imageContainer: {
+    hidden: { opacity: 0, x: 50 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.8, ease: 'easeOut' },
+    },
+  },
+
+  image: {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.5, ease: 'easeOut' },
+    },
+    hover: { scale: 1.05, transition: { duration: 0.3 } },
+  },
+
+  button: {
+    hover: { scale: 1.3, transition: { type: 'spring', stiffness: 300 } },
+  },
+
+  note: {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { delay: 0.3, duration: 0.5 } },
+  },
+};
+
+export const buttonAnimation: Variants = {
+  whileHover: {
+    scale: 1.05,
+    transition: { type: 'spring', stiffness: 400, damping: 10 },
+  },
+  whileTap: {
+    scale: 0.95,
+    transition: { type: 'spring', stiffness: 400, damping: 10 },
+  },
+};

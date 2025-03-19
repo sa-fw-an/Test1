@@ -51,14 +51,14 @@ export const socialLinks = [
 ];
 
 export const resourceLinks = [
-  { to: '/culture-pedagogy', text: 'Culture and pedagogy' },
-  { to: '/students', text: 'For Students' },
-  { to: '/school-administrators', text: 'For School Administrators' },
-  { to: '/parents', text: 'For Parents' },
+  { to: '/more/culture', text: 'Culture and pedagogy' },
+  { to: '/more/students', text: 'For Students' },
+  { to: '/more/school-admin', text: 'For School Administrators' },
+  { to: '/more/parents', text: 'For Parents' },
   { to: '/join-development', text: 'For Developers' },
   { to: '/news/sugar-stories', text: 'Sugar Stories' },
-  { to: '/music-blocks', text: 'Music Blocks' },
-  { to: '/turtle-blocks', text: 'Turtle Blocks JS' },
+  { to: '/musicblocks', text: 'Music Blocks' },
+  { to: '/turtleblocks', text: 'Turtle Blocks JS' },
 ];
 
 export const developmentLinks = [
@@ -81,7 +81,6 @@ export const developmentLinks = [
     href: 'https://wiki.sugarlabs.org/go/Welcome_to_the_Sugar_Labs_wiki',
     text: 'Sugar Labs Wiki',
   },
-  { to: '/contributor-profiles', text: 'Contributor Profiles' },
 ];
 
 export const quickLinks = [
