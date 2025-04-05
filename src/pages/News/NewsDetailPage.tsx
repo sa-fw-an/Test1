@@ -17,20 +17,9 @@ const NewsDetailPage: React.FC = () => {
     src: string;
     alt: string;
   } | null>(null);
-  const [isPathReady, setIsPathReady] = useState<boolean>(false);
-
-  // Check if path is ready after redirect
-  useEffect(() => {
-    // Small delay to ensure the path restoration from sessionStorage has completed
-    const timer = setTimeout(() => {
-      setIsPathReady(true);
-    }, 50);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   const loadPost = useCallback(async () => {
-    if (!slug || !isPathReady) {
+    if (!slug) {
       return;
     }
 
@@ -53,14 +42,12 @@ const NewsDetailPage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [slug, isPathReady]);
+  }, [slug]);
 
-  // Effect to load post when path is ready and slug changes
+  // Effect to load post when slug changes
   useEffect(() => {
-    if (isPathReady) {
-      loadPost();
-    }
-  }, [loadPost, isPathReady]);
+    loadPost();
+  }, [loadPost]);
 
   // Image modal setup
   useEffect(() => {
@@ -115,8 +102,8 @@ const NewsDetailPage: React.FC = () => {
     document.body.classList.remove('overflow-hidden');
   };
 
-  // If the path is not ready yet or still loading initial data
-  if (!isPathReady || (isLoading && !post)) {
+  // If still loading initial data
+  if (isLoading && !post) {
     return (
       <>
         <Header />

@@ -15,7 +15,6 @@ const NewsPage: React.FC = () => {
   const navigate = useNavigate();
   const { category } = useParams<{ category?: string }>();
 
-  const [isPathReady, setIsPathReady] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<string>('');
   const [posts, setPosts] = useState<Post[]>([]);
   const [displayCount, setDisplayCount] = useState<number>(4);
@@ -27,20 +26,8 @@ const NewsPage: React.FC = () => {
     [],
   );
 
-  // Check if path is ready after redirect
-  useEffect(() => {
-    // Small delay to ensure the path restoration from sessionStorage has completed
-    const timer = setTimeout(() => {
-      setIsPathReady(true);
-    }, 50);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   // Determine the initial category from URL or default
   useEffect(() => {
-    if (!isPathReady) return;
-
     let initialCategory = 'COMMUNITY NEWS';
 
     if (category) {
@@ -51,11 +38,11 @@ const NewsPage: React.FC = () => {
     }
 
     setActiveCategory(initialCategory);
-  }, [category, validCategories, isPathReady]);
+  }, [category, validCategories]);
 
   // Load posts when category changes
   const loadPosts = useCallback(async () => {
-    if (!activeCategory || !isPathReady) return;
+    if (!activeCategory) return;
 
     setIsLoading(true);
     setError(null);
@@ -79,24 +66,24 @@ const NewsPage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [activeCategory, isPathReady]);
+  }, [activeCategory]);
 
   // Update URL when category changes
   useEffect(() => {
-    if (!isPathReady || !activeCategory) return;
+    if (!activeCategory) return;
 
     const categoryPath = activeCategory.toLowerCase().replace(/\s+/g, '-');
     if (category !== categoryPath) {
       navigate(`/news/${categoryPath}`, { replace: true });
     }
-  }, [activeCategory, navigate, category, isPathReady]);
+  }, [activeCategory, navigate, category]);
 
   // Load posts when category is determined
   useEffect(() => {
-    if (activeCategory && isPathReady) {
+    if (activeCategory) {
       loadPosts();
     }
-  }, [activeCategory, loadPosts, isPathReady]);
+  }, [activeCategory, loadPosts]);
 
   const handlePostClick = (slug: string): void => {
     const categoryPath = activeCategory.toLowerCase().replace(/\s+/g, '-');
@@ -114,8 +101,8 @@ const NewsPage: React.FC = () => {
   const visiblePosts = posts.slice(0, displayCount);
   const hasMorePosts = posts.length > displayCount;
 
-  // Show loading state while waiting for path restoration or initial data load
-  if (!isPathReady || (isLoading && posts.length === 0)) {
+  // Show loading state for initial data load
+  if (isLoading && posts.length === 0) {
     return (
       <>
         <Header />
