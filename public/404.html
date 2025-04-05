@@ -6,10 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SugarLabs - Redirecting...</title>
     <script>
-      const pathSegments = window.location.pathname.split('/');
-      const fullPath = window.location.pathname + window.location.search + window.location.hash;
-      sessionStorage.setItem('redirectPath', fullPath);
-      window.location.href = '/';
+      // This is a SPA redirect script for GitHub Pages
+      (function() {
+        // Save the current path, query, and hash
+        var path = window.location.pathname;
+        var query = window.location.search;
+        var hash = window.location.hash;
+        var fullPath = path + query + hash;
+        
+        // Save it to sessionStorage
+        sessionStorage.setItem('gh_redirect', fullPath);
+        
+        // Redirect to the root with a cache-busting parameter
+        window.location.replace('/?redirect=' + Date.now());
+      })();
     </script>
   </head>
   <body>
