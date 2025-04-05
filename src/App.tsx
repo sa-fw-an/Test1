@@ -12,12 +12,12 @@ const App = () => {
     // Handle redirects from 404.html
     const handleRedirect = () => {
       const redirectPath = sessionStorage.getItem('redirectPath');
-      
+
       if (redirectPath) {
         console.log('Handling redirect to:', redirectPath);
         // Remove the redirectPath from sessionStorage to prevent loops
         sessionStorage.removeItem('redirectPath');
-        
+
         // Navigate to the stored path
         try {
           router.navigate(redirectPath);
