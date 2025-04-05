@@ -20,7 +20,6 @@ import RaspberryPiPage from '@/pages/TryNow/Raspberry';
 import MusicBlocksPage from '@/pages/TryNow/MusicBlocks';
 import FlatHubPage from '@/pages/TryNow/FlatHub';
 
-// Simple BrowserRouter with no basename (since you're using a custom domain)
 const router = createBrowserRouter([
   { path: `/`, element: <MainPage /> },
   { path: `/about-us`, element: <AboutUs /> },
