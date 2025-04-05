@@ -6,16 +6,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SugarLabs - Redirecting...</title>
     <script>
-      const pathSegments = window.location.pathname.split('/');
-      const fullPath = window.location.pathname + window.location.search + window.location.hash;
-      sessionStorage.setItem('redirectPath', fullPath);
-      window.location.href = '/';
+      (function() {
+        // Get the repository name if deployed on GitHub Pages
+        function getRepoName() {
+          const hostname = window.location.hostname;
+          if (hostname === 'localhost' || hostname === '127.0.0.1') {
+            return '';
+          }
+          
+          // For GitHub user/org pages (username.github.io) there's no repo segment
+          if (hostname.endsWith('github.io')) {
+            const segments = hostname.split('.');
+            if (segments.length >= 3 && 
+                segments[0] !== 'username' && 
+                hostname === `${segments[0]}.github.io`) {
+              return '';
+            }
+          }
+          
+          // For project pages (username.github.io/repo-name)
+          const pathSegments = window.location.pathname.split('/');
+          return pathSegments.length > 1 ? pathSegments[1] : '';
+        }
+        
+        const repoName = getRepoName();
+        let redirectPath = window.location.pathname;
+        
+        // Remove the repository name from the path if on GitHub Pages project site
+        if (repoName && redirectPath.startsWith('/' + repoName)) {
+          redirectPath = redirectPath.substring(('/' + repoName).length) || '/';
+        }
+        
+        // Save the full path with search and hash for restoration
+        const fullRedirectPath = redirectPath + window.location.search + window.location.hash;
+        sessionStorage.setItem('redirectPath', fullRedirectPath);
+        
+        // Build the redirect URL with repo name if needed
+        let redirectUrl = '/';
+        if (repoName) {
+          redirectUrl = '/' + repoName;
+        }
+        
+        // Redirect to the base URL
+        window.location.href = redirectUrl;
+      })();
     </script>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: #f7f9fc;
+        color: #333;
+      }
+      
+      h1 {
+        font-size: 24px;
+        margin-bottom: 16px;
+      }
+      
+      p {
+        font-size: 16px;
+      }
+      
+      a {
+        color: #3182ce;
+        text-decoration: none;
+      }
+      
+      a:hover {
+        text-decoration: underline;
+      }
+      
+      .loading {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        border-top-color: #3182ce;
+        animation: spin 1s linear infinite;
+        margin-bottom: 24px;
+      }
+      
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
   </head>
   <body>
-    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; font-family: Arial, sans-serif;">
-      <h1>Redirecting...</h1>
-      <p>If you are not redirected automatically, <a href="/">click here</a>.</p>
-    </div>
+    <div class="loading"></div>
+    <h1>Redirecting...</h1>
+    <p>If you are not redirected automatically, <a href="/">click here</a>.</p>
   </body>
 </html>
