@@ -1,3 +1,5 @@
+import { motion } from 'framer-motion';
+import { fadeInUpAnimation, zoomFadeInAnimation } from '@/styles/Animations.ts';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
 import FeatureSection from '@/components/TryNow/FeatureSection';
@@ -19,7 +21,48 @@ import {
 
 const MusicBlocksPage = () => {
   return (
-    <div>
+    <div className="relative">
+      {/* Floating SVGs */}
+      <motion.div
+        className="absolute top-[10vh] left-[5vw] sm:left-[30vw] z-[-1] pointer-events-none"
+        variants={fadeInUpAnimation}
+        initial="initial"
+        animate="animate"
+      >
+        <img
+          src="assets/FloatingSVGs/music-block-1.svg"
+          alt="Music Block 1"
+          className="w-[clamp(100px,10vw,180px)]"
+        />
+      </motion.div>
+
+      <motion.div
+        className="absolute top-[65vh] right-[5vw] sm:right-[50vw] z-[-1] pointer-events-none"
+        variants={fadeInUpAnimation}
+        initial="initial"
+        animate="animate"
+      >
+        <img
+          src="assets/FloatingSVGs/music-block-2.svg"
+          alt="Music Block 2"
+          className="w-[clamp(80px,9vw,160px)]"
+        />
+      </motion.div>
+
+      <motion.div
+        className="absolute top-[10vh] right-[10vw] sm:right-[15vw] z-[-1] pointer-events-none"
+        variants={fadeInUpAnimation}
+        initial="initial"
+        animate="animate"
+      >
+        <img
+          src="assets/FloatingSVGs/music-block-3.svg"
+          alt="Music Block 3"
+          className="w-[clamp(90px,10vw,170px)]"
+        />
+      </motion.div>
+
+      {/* Main Content */}
       <Header />
       <main className="container mx-auto px-4 sm:px-6 md:px-8 py-6">
         <FeatureSection data={musicBlocksData} />
@@ -39,7 +82,14 @@ const MusicBlocksPage = () => {
         </div>
 
         <div className="w-[80%] mx-auto flex justify-center">
-          <img src={mockupImage.path} alt="TurtleMockup" />
+          <motion.img
+            src={mockupImage.path}
+            alt="MusicBlocksMockup"
+            variants={zoomFadeInAnimation}
+            initial="initial"
+            animate="animate"
+            className="w-[80%] mx-auto"
+          />
         </div>
 
         <p className="w-[80%] mx-auto flex justify-center">
@@ -58,6 +108,7 @@ const MusicBlocksPage = () => {
             title={section.title}
             content={section.content}
             button={section.button}
+            links={section.links}
           />
         ))}
 
@@ -112,6 +163,7 @@ const MusicBlocksPage = () => {
             title={section.title}
             content={section.content}
             button={section.button}
+            links={section.links}
           />
         ))}
       </main>

@@ -1023,3 +1023,51 @@ export const buttonAnimation: Variants = {
     transition: { type: 'spring', stiffness: 400, damping: 10 },
   },
 };
+export const fadeInUpAnimation: Variants = {
+  initial: { opacity: 0, y: 30 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 0.7, // ⏳ Adds a delay of 1.5 seconds before animation starts
+      duration: 1.5,
+      ease: 'easeOut',
+    },
+  },
+};
+export const zoomFadeInAnimation: Variants = {
+  initial: { opacity: 0, scale: 0.9 }, // Start with a slight shrink and hidden
+  animate: {
+    opacity: 1,
+    scale: 1, // Smoothly zoom to normal size
+    transition: {
+      delay: 1, // Starts after 2 seconds (optional, tweak as needed)
+      duration: 1.5, // Takes 1.5 seconds
+      ease: 'easeOut',
+    },
+  },
+};
+export const zoomInAnimation = {
+  initial: { scale: 0.8, opacity: 0 },
+  animate: {
+    scale: 1,
+    opacity: 1,
+    transition: { duration: 0.8, ease: 'easeOut' },
+  },
+};
+export const fadeInDelayed = {
+  initial: { opacity: 0, y: 50 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: 'easeOut', delay: 0.5 },
+  },
+};
+export const cardFadeIn = {
+  hidden: { opacity: 0, y: 40 },
+  visible: (index: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: 'easeOut', delay: index * 0.2 }, // Stagger effect
+  }),
+};

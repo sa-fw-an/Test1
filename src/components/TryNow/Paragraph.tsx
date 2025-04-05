@@ -1,14 +1,24 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { paragraphAnimations } from '@/styles/Animations';
+import DOMPurify from 'dompurify';
+import { renderContentWithLinks } from '@/utils/renderlinks-utils';
 
 interface ParagraphProps {
   title: string;
   content: string;
   button?: string | null;
+  buttonLink?: string | URL;
+  links?: { text: string; url: string }[] | null;
 }
 
-const Paragraph: React.FC<ParagraphProps> = ({ title, content, button }) => {
+const Paragraph: React.FC<ParagraphProps> = ({
+  title,
+  content,
+  button,
+  buttonLink,
+  links,
+}) => {
   const contentPoints = content.includes('\n')
     ? content.split('\n')
     : [content];
@@ -39,7 +49,13 @@ const Paragraph: React.FC<ParagraphProps> = ({ title, content, button }) => {
               custom={index}
               variants={paragraphAnimations.listItem(index)}
             >
-              {point.trim()}
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(
+                    renderContentWithLinks(point.trim(), links),
+                  ),
+                }}
+              />
             </motion.li>
           ))}
         </ul>
@@ -48,7 +64,13 @@ const Paragraph: React.FC<ParagraphProps> = ({ title, content, button }) => {
           className="text-gray-700 mt-4"
           variants={paragraphAnimations.text}
         >
-          {content}
+          <span
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(
+                renderContentWithLinks(content, links),
+              ),
+            }}
+          />
         </motion.p>
       )}
 
@@ -58,6 +80,7 @@ const Paragraph: React.FC<ParagraphProps> = ({ title, content, button }) => {
           className="mt-4 bg-blue-600 text-white font-bold py-2 px-6 rounded-full shadow-lg hover:bg-blue-700 transition"
           whileHover="hover"
           variants={paragraphAnimations.button}
+          onClick={() => window.open(buttonLink, '_blank')}
         >
           {button}
         </motion.button>
