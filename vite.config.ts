@@ -1,28 +1,30 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import legacy from '@vitejs/plugin-legacy'
-import tailwindcss from '@tailwindcss/vite'
-import path from 'path'
+import path from 'path';
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
+import legacy from '@vitejs/plugin-legacy';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   base: './',
   plugins: [
     react(),
     tailwindcss(),
+    // generate a legacy bundle + inline polyfills for older WebKit/IE‑class browsers
     legacy({
+      // list of browsers to support for the legacy build
       targets: [
-        'defaults',
-        'safari >= 7'
+        '>0.2%',
+        'not dead',
+        'not op_mini all',
+        'ie 11'           // explicitly include IE11 (and very old WebKits)
       ],
-      additionalLegacyPolyfills: [
-        'regenerator-runtime/runtime'
-      ]
+      // optionally inject additional polyfills
+      additionalLegacyPolyfills: ['regenerator-runtime/runtime']
     })
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'), // Allows using "@" as an alias for "src"
+      '@': path.resolve(__dirname, './src'),
     },
   },
   build: {
@@ -42,17 +44,14 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            // Split vendor code into separate chunks
             return 'vendor';
           }
           if (id.includes('src/constants/MarkdownFiles')) {
-            // Split Markdown related pages into a separate chunk
             return 'mdfiles';
           }
-          // Add more custom chunking logic as needed
         },
       },
     },
-    chunkSizeWarningLimit: 1500, // Increase the limit as needed
+    chunkSizeWarningLimit: 1500,
   },
 });
