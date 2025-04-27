@@ -1,12 +1,25 @@
-import path from 'path';
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import legacy from '@vitejs/plugin-legacy'
+import tailwindcss from '@tailwindcss/vite'
+import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: './',
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    legacy({
+      targets: [
+        'defaults',
+        'safari >= 7'
+      ],
+      additionalLegacyPolyfills: [
+        'regenerator-runtime/runtime'
+      ]
+    })
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'), // Allows using "@" as an alias for "src"
@@ -40,6 +53,6 @@ export default defineConfig({
         },
       },
     },
-    chunkSizeWarningLimit: 1000, // Increase the limit as needed
+    chunkSizeWarningLimit: 1500, // Increase the limit as needed
   },
 });
