@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import carousel styles
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { featureSectionAnimations } from '@/styles/Animations';
 
 interface FeatureData {
@@ -49,7 +49,7 @@ const FeatureSection = ({ data }: { data: FeatureData }) => {
             infiniteLoop
             autoPlay
             interval={3000}
-            transitionTime={600} // Smooth transition
+            transitionTime={600}
             emulateTouch
             dynamicHeight
           >

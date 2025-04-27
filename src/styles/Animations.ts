@@ -1029,7 +1029,7 @@ export const fadeInUpAnimation: Variants = {
     opacity: 1,
     y: 0,
     transition: {
-      delay: 0.7, // ⏳ Adds a delay of 1.5 seconds before animation starts
+      delay: 0.2,
       duration: 1.5,
       ease: 'easeOut',
     },
@@ -1070,4 +1070,11 @@ export const cardFadeIn = {
     y: 0,
     transition: { duration: 0.6, ease: 'easeOut', delay: index * 0.2 }, // Stagger effect
   }),
+};
+export const lineAnimation = {
+  hidden: { height: 0 },
+  visible: {
+    height: '100%',
+    transition: { duration: 1.5, ease: 'easeInOut' },
+  },
 };

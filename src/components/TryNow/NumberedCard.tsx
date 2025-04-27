@@ -8,6 +8,7 @@ interface NumberedCardProps {
   description: string;
   image?: string;
   borderColor: string;
+  link?: string;
 }
 
 const NumberedCard: React.FC<NumberedCardProps> = ({
@@ -16,10 +17,14 @@ const NumberedCard: React.FC<NumberedCardProps> = ({
   description,
   image,
   borderColor,
+  link,
 }) => {
   return (
-    <motion.div
-      className="relative flex flex-col items-center text-center p-6 rounded-2xl shadow-md"
+    <motion.a
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="relative flex flex-col items-center text-center p-6 rounded-2xl shadow-md cursor-pointer no-underline"
       style={{ border: `2px solid ${borderColor}` }}
       initial="hidden"
       whileInView="visible"
@@ -31,7 +36,6 @@ const NumberedCard: React.FC<NumberedCardProps> = ({
       <motion.div
         className="absolute -top-6 w-12 h-12 flex items-center justify-center rounded-full text-white text-xl font-bold"
         style={{ backgroundColor: borderColor }}
-        whileHover="hover"
         variants={numberedCardAnimations.numberCircle}
       >
         {number}
@@ -49,11 +53,10 @@ const NumberedCard: React.FC<NumberedCardProps> = ({
           src={image}
           alt={title}
           className="w-full h-auto mt-4 rounded-lg"
-          whileHover="hover"
           variants={numberedCardAnimations.image}
         />
       )}
-    </motion.div>
+    </motion.a>
   );
 };
 

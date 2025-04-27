@@ -129,7 +129,7 @@ export const sugarizerData = {
   title: 'Sugarizer',
   subtitle: 'is Multi-Platform',
   quote:
-    '“Young children learn by games; compulsory education cannot remain in the soul." — Plato',
+    '“Debugging is one of the most powerful educational ideas of the 21st century.” — Cynthia Solomon',
   description:
     'Sugarizer makes the Sugar Learning Platform and its activities available on web, mobile, Windows, and MacOS.',
   images: [

@@ -85,6 +85,19 @@ export const fetchMarkdownPosts = async (
         );
         const fileName = filePath.split('/').pop()?.replace('.md', '') || '';
 
+        // build image URL: only prefix "/" if it’s not a real http(s) URL
+        let imageUrl: string;
+        if (Array.isArray(frontmatter.image)) {
+          imageUrl = frontmatter.image.join(' ').trim();
+        } else if (frontmatter.image) {
+          imageUrl = frontmatter.image.trim();
+        } else {
+          imageUrl = '/assets/Images/SugarNewsLogo.png';
+        }
+        if (!/^https?:\/\//.test(imageUrl)) {
+          imageUrl = '/' + imageUrl.replace(/^\/+/, '');
+        }
+
         const post: Post = {
           id: fileName,
           title: Array.isArray(frontmatter.title)
@@ -114,9 +127,7 @@ export const fetchMarkdownPosts = async (
             : frontmatter.tags
               ? [frontmatter.tags]
               : [],
-          image: Array.isArray(frontmatter.image)
-            ? frontmatter.image.join(' ')
-            : frontmatter.image || '/assets/Images/sugarnews.jpeg',
+          image: imageUrl,
         };
 
         allPosts.push(post);

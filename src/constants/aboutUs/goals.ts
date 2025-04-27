@@ -3,12 +3,7 @@ import { MotionProps } from 'framer-motion';
 export interface Goal {
   title: string;
   description: string;
-}
-
-interface ProgressItem {
-  percent: number;
-  label: string;
-  color: string;
+  category?: string;
 }
 
 export interface SectionContentType {
@@ -17,9 +12,6 @@ export interface SectionContentType {
     highlight: string;
   };
   introduction: string;
-  progressTitle: string;
-  resetViewButtonText: string;
-  insightsTitle: string;
 }
 
 export interface AnimationsType {
@@ -27,10 +19,6 @@ export interface AnimationsType {
     initial: MotionProps['initial'];
     whileInView: MotionProps['whileInView'];
     whileHover: MotionProps['whileHover'];
-  };
-  progressBar: {
-    initial: MotionProps['initial'];
-    duration: number;
   };
   flowContainer: {
     initial: MotionProps['initial'];
@@ -45,61 +33,41 @@ export interface AnimationsType {
   };
 }
 
-// Define the goals for the organization
 export const goals: Goal[] = [
   {
-    title: 'Global Education Impact',
+    title: 'Power users, involved in feedback',
     description:
-      'Reach 1 million students worldwide with our educational tools by 2026',
+      'Reach one hundred "power" users, regularly providing their feedback to the development community, by the end of 2025',
+    category: 'Community',
   },
   {
-    title: 'Open Source Advocacy',
+    title: 'Leadership in education',
     description:
-      'Foster a new generation of open source contributors through mentorship programs',
+      'Take fifteen actions (e.g. conferences, articles, events-led) in 2025 that help us establish ourselves as leaders in education technology.',
+    category: 'Education',
   },
   {
-    title: 'Educational Innovation',
+    title: 'New Sugar Stories',
+    description: 'Publish five new Sugar Stories from the community in 2025.',
+    category: 'Content',
+  },
+  {
+    title: 'Establish 150k in annual revenue',
     description:
-      'Develop cutting-edge learning platforms that adapt to diverse learning styles',
+      'In order to magnify our impact, we aim to establish 150k in annual revenue by the end of 2025. These funds will help us establish our operations, starting by hiring one full-time staff and three part time workers to serve our stakeholders.',
+    category: 'Sustainability',
   },
   {
-    title: 'Community Building',
+    title: '200 volunteers',
     description:
-      'Create sustainable global communities of practice around educational technology',
+      'In order to best serve our community, our goal is to have twenty active mentors, and 180 active volunteers.',
+    category: 'Community',
   },
   {
-    title: 'Digital Equity',
+    title: '1,000 people on Matrix',
     description:
-      'Ensure technology access for underrepresented and underserved communities worldwide',
-  },
-];
-
-// Define progress metrics for each area
-export const progressItems: ProgressItem[] = [
-  {
-    percent: 75,
-    label: 'Education Impact',
-    color: 'from-orange-400 to-orange-600',
-  },
-  {
-    percent: 60,
-    label: 'Community Growth',
-    color: 'from-orange-300 to-orange-500',
-  },
-  {
-    percent: 85,
-    label: 'Innovation',
-    color: 'from-orange-500 to-orange-700',
-  },
-  {
-    percent: 45,
-    label: 'Global Reach',
-    color: 'from-orange-600 to-orange-800',
-  },
-  {
-    percent: 70,
-    label: 'Open Source Adoption',
-    color: 'from-orange-200 to-orange-400',
+      'Our main mode of communication is on Matrix chat. Our goal in 2025 is to have 1,000 users on our chat, discussing ideas, designs, and development for our community-led suite of learning tools.',
+    category: 'Communication',
   },
 ];
 
@@ -111,9 +79,6 @@ export const sectionContent: SectionContentType = {
   },
   introduction:
     'At Sugar Labs, we strive to create a vibrant ecosystem where technology empowers education. Our strategic goals focus on expanding our impact while maintaining our core values.',
-  progressTitle: 'Our Progress',
-  resetViewButtonText: 'Reset View',
-  insightsTitle: 'Progress Insights',
 };
 
 // Animation settings
@@ -122,10 +87,6 @@ export const animations: AnimationsType = {
     initial: { opacity: 0, x: -20 },
     whileInView: { opacity: 1, x: 0 },
     whileHover: { x: 10, backgroundColor: '#fef2f2' },
-  },
-  progressBar: {
-    initial: { width: 0 },
-    duration: 1,
   },
   flowContainer: {
     initial: { opacity: 0, y: 20 },

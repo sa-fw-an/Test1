@@ -19,8 +19,8 @@ In 1971, Papert and Solomon published *“20 Things to do with a Computer”*, a
 ---
 
 ## Sugar Pedagogy  
->>> **“Learning is hard fun.”** – Marvin Minsky  
->>> **“A six-year-old child can become an expert.”** – Marvin Minsky  
+> **“Learning is hard fun.”** – Marvin Minsky  
+> **“A six-year-old child can become an expert.”** – Marvin Minsky  
 
 In a 2008 essay questioning “general” education, Marvin Minsky proposed that we *“re-aim our schools towards encouraging children to pursue more focused hobbies and specialties—to provide them with more time for (and earlier experience with) developing more powerful sets of mental skills, which they later can extend to more academic activities.”*  
 

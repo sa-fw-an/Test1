@@ -1,10 +1,10 @@
 export const trisquelData = {
   title: 'Trisquel',
-  subtitle: 'Freedom-Powered Computing',
+  subtitle: 'Sugar in total freedom',
   quote:
-    '“Young children learn by games; compulsory education cannot remain in the soul.” — Plato',
+    '“Sugar is a free software platform that is designed for children for learning. Our goal is to raise a generation of critical thinkers and problem-solvers by establishing a culture of independent thinking and learning.” — Walter Bender, Sugar Labs founder',
   description:
-    "Trisquel GNU/Linux is a fully free OS for homes, businesses, and schools, with reliable support for the Sugar Desktop. It's a great choice for booting or installing Sugar on any computer.",
+    "Trisquel GNU/Linux is a fully free operating system (OS) for homes, businesses, and schools, which receives reliable support for Sugar Desktop. It's a great choice for booting or installing Sugar on any computer.",
   images: [
     {
       src: 'assets/TryNowImages/trisquel.png',
@@ -23,8 +23,8 @@ export const trisquelLogoCards = [
     title: 'Download an ISO with Sugar Desktop',
     description: [
       'Great if you have a laptop or desktop you can dedicate for this purpose.',
-      'Gratis and free: Trisquel asks for a donation, but does not require one.',
-      'Private: Your children’s data is safely stored locally on their computer.',
+      'Gratis and free: Trisquel asks for a donation, but does not require payment.',
+      'Respect for privacy: Your data is safely stored locally on your computer.',
       'Ad-free and simple: Zero distractions, so your child can stay focused.',
     ],
     buttons: [
@@ -70,7 +70,7 @@ export const trisquelSections = [
   {
     title: "Trisquel is fully free 'as in freedom'",
     content:
-      'What makes Trisquel different is that it is fully free as in freedom, including the freedom to study the source code. The Trisquel maintainers have given reliable support for Sugar, which is another reason that we recommend it as a great option for those of you interested in booting the Sugar Learning Environment from a live USB or installing onto your computer.',
+      'What makes Trisquel different from other OSes like Windows and iOS is it’s fully free as in freedom, including the freedom to study the source code. The Trisquel maintainers have given reliable support for Sugar, which is another reason that we recommend it as a great option for those of you interested in booting the Sugar Learning Environment (aka Sugar Desktop) from a live USB or installing onto your computer.',
     button: '',
   },
 ];

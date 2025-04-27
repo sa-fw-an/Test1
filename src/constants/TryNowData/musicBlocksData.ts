@@ -1,7 +1,8 @@
 export const musicBlocksData = {
   title: 'Music Blocks',
   subtitle: 'A Musical Microworld',
-  quote: '“All musicians are subconsciously mathematicians” – Monk',
+  quote:
+    '“All musicians are subconsciously mathematicians” – Thelonious Monk, jazz pianist and composer',
   description:
     'Music Blocks is a collection of manipulative tools for exploring fundamental musical concepts in an integrative and fun way.',
   images: [

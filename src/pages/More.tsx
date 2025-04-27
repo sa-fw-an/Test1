@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { renderMarkdown } from '@/utils/mdparser-utils';
 import {
   getMorePageBySlug,
   getMorePagesByCategory,
@@ -10,6 +9,7 @@ import type { MorePage as MorePageType } from '@/utils/more-utils';
 import { motion } from 'framer-motion';
 import Header from '@/sections/Header';
 import Footer from '@/sections/Footer';
+import MarkdownRenderer from '@/utils/MarkdownRenderer';
 
 const MorePage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -22,6 +22,11 @@ const MorePage: React.FC = () => {
   >({});
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const [notFoundSlug, setNotFoundSlug] = useState<string | null>(null);
+  const [zoomableImages, setZoomableImages] = useState<HTMLImageElement[]>([]);
+  const [modalImage, setModalImage] = useState<{
+    src: string;
+    alt: string;
+  } | null>(null);
 
   useEffect(() => {
     const loadPage = async () => {
@@ -67,6 +72,46 @@ const MorePage: React.FC = () => {
 
     loadPage();
   }, [slug, navigate]);
+
+  // Handle zoomable images
+  useEffect(() => {
+    if (!isLoading && zoomableImages.length > 0) {
+      const handleClick = (event: Event) => {
+        const imgElement = event.target as HTMLImageElement;
+        setModalImage({
+          src: imgElement.src,
+          alt: imgElement.alt || 'Image',
+        });
+        document.body.classList.add('overflow-hidden');
+      };
+
+      zoomableImages.forEach((img) =>
+        img.addEventListener('click', handleClick),
+      );
+      return () => {
+        zoomableImages.forEach((img) =>
+          img.removeEventListener('click', handleClick),
+        );
+      };
+    }
+  }, [isLoading, zoomableImages]);
+
+  // Handle escape key for modal
+  useEffect(() => {
+    const handleEscKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && modalImage) {
+        closeImageModal();
+      }
+    };
+
+    window.addEventListener('keydown', handleEscKey);
+    return () => window.removeEventListener('keydown', handleEscKey);
+  });
+
+  const closeImageModal = () => {
+    setModalImage(null);
+    document.body.classList.remove('overflow-hidden');
+  };
 
   if (isLoading) {
     return (
@@ -170,12 +215,17 @@ const MorePage: React.FC = () => {
           >
             <div className="bg-white rounded-lg shadow-md p-6">
               {page ? (
-                <div
-                  className="prose prose-lg max-w-none"
-                  dangerouslySetInnerHTML={{
-                    __html: renderMarkdown(page.content),
-                  }}
-                />
+                <div className="prose prose-lg max-w-none">
+                  <MarkdownRenderer
+                    content={page.content}
+                    setZoomableImages={setZoomableImages}
+                    frontmatter={{
+                      title: page.title,
+                      slug: page.slug,
+                      category: page.category ?? null,
+                    }}
+                  />
+                </div>
               ) : (
                 <div className="text-center py-8">
                   <div className="mx-auto w-20 h-20 flex items-center justify-center bg-red-100 rounded-full mb-6">
@@ -218,6 +268,44 @@ const MorePage: React.FC = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Image Modal */}
+      {modalImage && (
+        <motion.div
+          className="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closeImageModal();
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-image-title"
+        >
+          <div className="relative max-w-4xl max-h-full">
+            <motion.img
+              src={modalImage.src}
+              alt={modalImage.alt}
+              className="max-w-full max-h-[90vh] object-contain"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+              id="modal-image-title"
+            />
+            <p className="text-white text-center mt-2 text-sm">
+              {modalImage.alt}
+            </p>
+            <button
+              onClick={closeImageModal}
+              className="absolute top-2 right-2 text-white text-2xl hover:text-gray-300 bg-black bg-opacity-50 rounded-full w-8 h-8 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white"
+              aria-label="Close image"
+            >
+              &times;
+            </button>
+          </div>
+        </motion.div>
+      )}
+
       <Footer />
     </>
   );

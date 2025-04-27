@@ -1,9 +1,10 @@
 export const flathubData = {
-  title: 'Flathub for Sugar Labs',
+  title: 'Sugar on Flatpak',
   subtitle: 'Simplified Learning Platform Distribution',
-  quote: '"Education should be accessible everywhere" – Sugar Labs',
+  quote:
+    '“The context of human development is always a culture, not an isolated technology.” – Seymour Papert, computer scientist and educator',
   description:
-    'Flathub enables easy installation and distribution of Sugar Labs educational activities across different Linux platforms.',
+    'Flatpak enables easy installation and distribution of Sugar Labs educational activities across different Linux platforms.',
   images: [
     {
       src: 'assets/TryNowImages/flathub1.png',
@@ -14,9 +15,9 @@ export const flathubData = {
 
 export const flathubSections = [
   {
-    title: 'Flathub and Sugar Labs',
+    title: 'Flatpak and Sugar',
     content:
-      'Flathub provides a streamlined way to package and distribute Sugar Labs educational activities. It ensures that learning tools can be easily installed on various Linux distributions, making education more accessible.',
+      'Flatpak provides a streamlined way to package and distribute Sugar Labs educational activities. It ensures that learning tools can be easily installed on various Linux distributions, making education more accessible.',
     button: 'Explore Sugar Labs Activities',
     buttonLink: 'https://flathub.org/apps/search?q=sugar%20labs',
   },
@@ -41,12 +42,12 @@ export const flathubLogoCards = [
     logo: 'assets/TryNowImages/fpLogoCard2.png',
     title: 'Easy Installation',
     description: [
-      'Install Sugar Labs applications with just a few clicks on any Linux distribution',
+      'Install Sugar activities with just a few commands on any Linux distribution',
     ],
     buttons: [
       {
         text: 'Get Started',
-        link: 'https://flathub.org/apps/search?q=sugar%20labs',
+        link: 'https://flatpak.org/setup/',
         target: '_blank',
       },
     ],
@@ -70,15 +71,17 @@ export const flathubLogoCards = [
 export const numberedCards1 = [
   {
     number: '1',
-    title: 'Install Flathub',
-    description: 'Add Flathub repository to your Linux system',
+    title: 'Install Flatpak',
+    description: 'Add Flatpak repository to your Linux system',
     borderColor: '#68A6F7',
+    link: 'https://flatpak.org/setup/',
   },
   {
     number: '2',
     title: 'Find Sugar Activities',
     description: 'Browse the collection of 34+ educational applications',
     borderColor: '#68A6F7',
+    link: 'https://flathub.org/apps/collection/developer/Sugar%20Labs%20Community/1',
   },
 ];
 

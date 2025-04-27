@@ -26,7 +26,7 @@ const ReviewCard = ({
 }) => {
   return (
     <motion.div
-      className="bg-white dark:bg-gray-900 rounded-xl p-6 flex flex-col items-center text-center min-h-[250px] h-auto w-[350px] shadow-lg border border-gray-200 dark:border-gray-700 mx-2"
+      className="bg-white dark:bg-gray-900 rounded-xl p-6 flex flex-col items-center text-center min-h-[250px] h-auto w-[350px] shadow-lg border border-gray-200 dark:border-gray-700 mx-2 justify-between"
       variants={testimonialCard}
       initial="hidden"
       whileInView="visible"
@@ -51,7 +51,7 @@ const ReviewCard = ({
       </motion.p>
 
       {/* User Info */}
-      <div className="flex items-center mt-4 space-x-3">
+      <div className="flex items-center mt-4 space-x-3 text-left">
         <motion.img
           src={img}
           alt={name}
@@ -72,14 +72,6 @@ const ReviewCard = ({
 };
 
 export function DeveloperTestimonials() {
-  const firstRow =
-    developertestimonials.length > 2
-      ? developertestimonials.slice(
-          0,
-          Math.ceil(developertestimonials.length / 2),
-        )
-      : developertestimonials;
-
   return (
     <div className="w-full p-6">
       {/* Heading Section with Hearts */}
@@ -115,9 +107,9 @@ export function DeveloperTestimonials() {
             variants={testimonialHeading}
           >
             <span className="text-5xl font-bold font-[Caveat]">
-              What our developers say
+              What do developers say
               <br />
-              about their journey??
+              about their journey?
             </span>
           </motion.h2>
 
@@ -150,9 +142,8 @@ export function DeveloperTestimonials() {
         viewport={{ once: true, amount: 0.1 }}
         variants={marqueeContainer}
       >
-        {/* First Row (left to right) */}
-        <Marquee pauseOnHover className="w-full">
-          {firstRow.map((review, index) => (
+        <Marquee pauseOnHover className="w-full flex">
+          {developertestimonials.map((review, index) => (
             <ReviewCard
               key={review.username}
               {...review}

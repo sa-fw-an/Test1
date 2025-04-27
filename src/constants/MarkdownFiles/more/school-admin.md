@@ -40,7 +40,7 @@ Sugar equally promotes cultures of **expression and reflection**. With Sugar, we
 3. **Discovering:**  
    Sugar tries to accommodate a wide variety of users with different levels of skill in terms of reading and language and different levels of experience with computing by providing activities with a "low floor" and, where possible, "no ceiling."
 
->>> **“The only time collaboration is called cheating is when you are in school.” – Walter Bender**
+> **“The only time collaboration is called cheating is when you are in school.” – Walter Bender**
 
 Sugar drew inspiration for its activities and the fluid interface between activities from observing how the **free software community** collaborates. Software developers chat, socialize, play games, share media, and collaborate on media creation and programming in both formal and informal settings.
 

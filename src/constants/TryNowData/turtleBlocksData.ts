@@ -14,7 +14,7 @@ export const turtleBlocksData = {
   title: 'Turtle Blocks',
   subtitle: 'Playground for Coding',
   quote:
-    '“Young children learn by games; compulsory education cannot remain in the soul." — Plato',
+    '“Knowledge is a noun; learning is a verb.” — Walter Bender, Sugar Labs founder',
   description:
     'Turtle Blocks JavaScript lets users create colorful art with a Logo-inspired turtle using snap-together coding blocks. It’s beginner-friendly yet powerful enough for advanced programming, graphics, and math exploration.',
   images: [
@@ -37,7 +37,7 @@ export const turtleBlocksSections: TurtleBlockSection[] = [
   {
     title: 'Using turtle art JS',
     content:
-      "Turtle Blocks Javascript is designed to run in a browser. Most of the development has been done in Chrome, but it should also work in Firefox. You can run it directly from index.html, from a server maintained by Sugar Labs, from the github repo, or by setting up a local server. Once you've launched it in your browser, start by clicking on (or dragging) blocks from the Turtle palette. Use multiple blocks to create drawings; as the turtle moves under your control, colorful lines are drawn. You add blocks to your program by clicking on or dragging them from the palette to the main area. You can delete a block by dragging it back onto the palette. Click anywhere on a 'stack' of blocks to start executing that stack or by clicking in the Rabbit (fast) or Turtle (slow) on the Main Toolbar.",
+      "Turtle Blocks Javascript is designed to run in a browser. Most of the development has been done in Chrome, but it also works in Firefox. You can run it directly from index.html, from a server maintained by Sugar Labs, from the github repo, or by setting up a local server. Once you've launched it in your browser, start by clicking on (or dragging) blocks from the Turtle palette. Use multiple blocks to create drawings; as the turtle moves under your control, colorful lines are drawn. You add blocks to your program by clicking on or dragging them from the palette to the main area. You can delete a block by dragging it back onto the palette. Click anywhere on a 'stack' of blocks to start executing that stack or by clicking in the Rabbit (fast) or Turtle (slow) on the Main Toolbar.",
     button: null,
     links: [
       {
