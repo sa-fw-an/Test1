@@ -10,13 +10,25 @@ export default defineConfig({
     react(),
     tailwindcss(),
     legacy({
+      renderModernChunks: false,
+
       targets: [
-        '>0.2%',
-        'not dead',
-        'not op_mini all',
-        'ie 11'
+        'last 2 Safari versions', 
+        'iOS >= 10',
+        'chrome >= 49',
+        'not dead'
       ],
-      additionalLegacyPolyfills: ['regenerator-runtime/runtime']
+
+      // add fetch, promise, regenerator, etc.
+      additionalLegacyPolyfills: [
+        'regenerator-runtime/runtime', 
+        'whatwg-fetch',
+        'core-js/features/promise',
+        'core-js/features/array/find',
+        'core-js/features/object/assign',
+        // …add any other core-js polyfills you discover you need
+      ],
+      externalSystemJS: true
     })
   ],
   resolve: {
@@ -25,6 +37,7 @@ export default defineConfig({
     },
   },
   build: {
+    chunkSizeWarningLimit: 1500,
     rollupOptions: {
       onwarn(warning, warn) {
         if (
@@ -41,7 +54,6 @@ export default defineConfig({
           if (id.includes('src/constants/MarkdownFiles')) return 'mdfiles'
         }
       }
-    },
-    chunkSizeWarningLimit: 1500
+    }
   }
 })
