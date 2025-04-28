@@ -10,36 +10,36 @@ export default defineConfig({
     react(),
     tailwindcss(),
     legacy({
-      renderModernChunks: false,
-
-      targets: [
-        'last 2 Safari versions', 
-        'iOS >= 10',
-        'chrome >= 49',
-        'not dead'
-      ],
-
-      // add fetch, promise, regenerator, etc.
+      // transpile everything down to IE11/ES5
+      targets: ['>0.2%', 'not dead', 'ie 11'],
+      // include core-js, regenerator, fetch and globalThis polyfills
+      polyfills: true,
       additionalLegacyPolyfills: [
-        'regenerator-runtime/runtime', 
+        'regenerator-runtime/runtime',
+        'core-js/stable',
         'whatwg-fetch',
+        'core-js/proposals/global-this',
         'core-js/features/promise',
         'core-js/features/array/find',
         'core-js/features/object/assign',
-        // …add any other core-js polyfills you discover you need
       ],
-      externalSystemJS: true
+      // we don’t need modern polyfills in your case
+      modernPolyfills: false,
+      // make sure legacy chunks are emitted
+      renderLegacyChunks: true
     })
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
+      '@': path.resolve(__dirname, './src')
+    }
   },
   build: {
-    chunkSizeWarningLimit: 1500,
+    // esbuild will down‑level everything to ES5 (incl. RegExp)
+    target: 'es5',
     rollupOptions: {
       onwarn(warning, warn) {
+        // suppress the "use client" warning
         if (
           warning.code === 'MODULE_LEVEL_DIRECTIVE' &&
           warning.message.includes(`"use client"`)
@@ -54,6 +54,7 @@ export default defineConfig({
           if (id.includes('src/constants/MarkdownFiles')) return 'mdfiles'
         }
       }
-    }
+    },
+    chunkSizeWarningLimit: 1500
   }
 })
