@@ -110,20 +110,24 @@ jobs:
           EXISTING_COMMENT=$(gh api repos/${{ github.repository }}/issues/$PR_NUMBER/comments \
             --jq '.[] | select(.body | contains("🎉 **All PR workflows completed successfully!**")) | .id' | head -1)
           
-          SUCCESS_MESSAGE="🎉 **All PR workflows completed successfully!**
-
-This PR is ready to merge! ✅
-
-**Completed workflows:**
-- ✅ Continuous Integration (Build test passed)
-- ✅ Linting (Code quality checks passed)
-
-**What happens next:**
-- Your PR is ready for review and merge
-- Once merged to \`main\`, the Continuous Deployment workflow will automatically deploy to GitHub Pages
-
-Great work! 🚀"
-
+          cat << 'EOL' > success_message.txt
+          🎉 **All PR workflows completed successfully!**
+          
+          This PR is ready to merge! ✅
+          
+          **Completed workflows:**
+          - ✅ Continuous Integration (Build test passed)
+          - ✅ Linting (Code quality checks passed)
+          
+          **What happens next:**
+          - Your PR is ready for review and merge
+          - Once merged to `main`, the Continuous Deployment workflow will automatically deploy to GitHub Pages
+          
+          Great work! 🚀
+          EOL
+          
+          SUCCESS_MESSAGE=$(cat success_message.txt)
+          
           if [ -n "$EXISTING_COMMENT" ]; then
             # Update existing comment
             gh api repos/${{ github.repository }}/issues/comments/$EXISTING_COMMENT \
@@ -151,52 +155,59 @@ Great work! 🚀"
           
           if [ -n "$PENDING_WORKFLOWS" ]; then
             # Some workflows are still pending
-            COMMENT_MESSAGE="⏳ **PR workflows status** ($COMPLETED_COUNT/$EXPECTED_COUNT completed)
-
-Some workflows are still running. Please wait for all checks to complete.
-
-**Pending workflows:**"
+            cat << EOL > pending_message.txt
+          ⏳ **PR workflows status** ($COMPLETED_COUNT/$EXPECTED_COUNT completed)
+          
+          Some workflows are still running. Please wait for all checks to complete.
+          
+          **Pending workflows:**
+          EOL
+            
             while IFS= read -r workflow; do
               if [ -n "$workflow" ]; then
-                COMMENT_MESSAGE="$COMMENT_MESSAGE
-- ⏳ $workflow"
+                echo "- ⏳ $workflow" >> pending_message.txt
               fi
             done <<< "$PENDING_WORKFLOWS"
 
             if [ -n "$FAILED_WORKFLOWS" ]; then
-              COMMENT_MESSAGE="$COMMENT_MESSAGE
-
-**Failed workflows:**"
+              echo "" >> pending_message.txt
+              echo "**Failed workflows:**" >> pending_message.txt
               while IFS= read -r workflow; do
                 if [ -n "$workflow" ]; then
-                  COMMENT_MESSAGE="$COMMENT_MESSAGE
-- ❌ $workflow"
+                  echo "- ❌ $workflow" >> pending_message.txt
                 fi
               done <<< "$FAILED_WORKFLOWS"
             fi
+            
+            COMMENT_MESSAGE=$(cat pending_message.txt)
           else
             # All workflows completed but some failed
-            COMMENT_MESSAGE="❌ **Some PR workflows failed**
-
-This PR is not ready to merge. Please fix the failing workflows and push your changes.
-
-**Failed workflows:**"
+            cat << EOL > failed_message.txt
+          ❌ **Some PR workflows failed**
+          
+          This PR is not ready to merge. Please fix the failing workflows and push your changes.
+          
+          **Failed workflows:**
+          EOL
+            
             while IFS= read -r workflow; do
               if [ -n "$workflow" ]; then
-                COMMENT_MESSAGE="$COMMENT_MESSAGE
-- ❌ $workflow"
+                echo "- ❌ $workflow" >> failed_message.txt
               fi
             done <<< "$FAILED_WORKFLOWS"
 
-            COMMENT_MESSAGE="$COMMENT_MESSAGE
-
-**How to fix:**
-1. Check the workflow logs above for detailed error information
-2. Fix any failing tests, linting issues, or build problems
-3. Push your fixes to this branch to re-trigger the workflows
-4. Wait for all workflows to pass
-
-Need help? Feel free to ask for assistance in the comments below! 💪"
+            cat << 'EOL' >> failed_message.txt
+          
+          **How to fix:**
+          1. Check the workflow logs above for detailed error information
+          2. Fix any failing tests, linting issues, or build problems
+          3. Push your fixes to this branch to re-trigger the workflows
+          4. Wait for all workflows to pass
+          
+          Need help? Feel free to ask for assistance in the comments below! 💪
+          EOL
+            
+            COMMENT_MESSAGE=$(cat failed_message.txt)
           fi
 
           if [ -n "$EXISTING_COMMENT" ]; then
@@ -225,17 +236,20 @@ Need help? Feel free to ask for assistance in the comments below! 💪"
             --jq ".[] | select(.merged_at != null and .merge_commit_sha == \"$COMMIT_SHA\") | .number" | head -1)
           
           if [ -n "$RECENT_PR" ] && [ "$RECENT_PR" != "null" ]; then
-            DEPLOY_MESSAGE="🚀 **Deployment Successful!**
-
-Your PR has been successfully merged and deployed to GitHub Pages!
-
-**Deployment details:**
-- ✅ Continuous Deployment completed successfully
-- 🌐 Site updated at: https://www.sugarlabs.org
-- 📦 Deployed commit: \`$COMMIT_SHA\`
-
-Your changes are now live! 🎉"
-
+            cat << EOL > deploy_message.txt
+          🚀 **Deployment Successful!**
+          
+          Your PR has been successfully merged and deployed to GitHub Pages!
+          
+          **Deployment details:**
+          - ✅ Continuous Deployment completed successfully
+          - 🌐 Site updated at: https://www.sugarlabs.org
+          - 📦 Deployed commit: \`$COMMIT_SHA\`
+          
+          Your changes are now live! 🎉
+          EOL
+            
+            DEPLOY_MESSAGE=$(cat deploy_message.txt)
             gh pr comment $RECENT_PR --body "$DEPLOY_MESSAGE"
           fi
         env:
