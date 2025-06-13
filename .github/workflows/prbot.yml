@@ -50,19 +50,19 @@ jobs:
           # Run TypeScript linting
           if ! npm run lint:ts; then
             LINT_PASSED=false
-            LINT_ERRORS="${LINT_ERRORS}TypeScript linting failed\n"
+            LINT_ERRORS="${LINT_ERRORS}• TypeScript linting failed\n"
           fi
           
           # Run Markdown linting
           if ! npm run lint:md; then
             LINT_PASSED=false
-            LINT_ERRORS="${LINT_ERRORS}Markdown linting failed\n"
+            LINT_ERRORS="${LINT_ERRORS}• Markdown linting failed\n"
           fi
           
           # Check code formatting with Prettier
           if ! npm run format:check; then
             LINT_PASSED=false
-            LINT_ERRORS="${LINT_ERRORS}Code formatting issues detected\n"
+            LINT_ERRORS="${LINT_ERRORS}• Code formatting issues detected\n"
           fi
           
           echo "LINT_PASSED=$LINT_PASSED" >> $GITHUB_ENV
@@ -86,50 +86,78 @@ jobs:
           # Generate content for the comment file
           {
             if [ "$CI_PASSED" = "true" ] && [ "$LINT_PASSED" = "true" ]; then
-              echo "🎉 **All checks passed!**"
+              echo "## 🎉 All Checks Passed!"
               echo ""
-              echo "Your PR is ready to merge! ✅"
+              echo "> **Status:** ✅ Ready to merge"
               echo ""
-              echo "**Completed workflows:**"
-              echo "- ✅ Continuous Integration (Build successful)"
-              echo "- ✅ Linting (Code formatting and style checks passed)"
+              echo "### ✅ Completed Workflows"
               echo ""
-              echo "This PR can now be safely merged to \`main\` branch."
+              echo "| Workflow | Status | Details |"
+              echo "|----------|--------|---------|"
+              echo "| 🔨 **Continuous Integration** | ✅ Passed | Build completed successfully |"
+              echo "| 📝 **Code Linting** | ✅ Passed | All formatting and style checks passed |"
+              echo ""
+              echo "---"
+              echo ""
+              echo "🚀 **This PR is ready for review and can be safely merged to \`main\` branch!**"
+              echo ""
+              echo "*Great work! Your code meets all quality standards.* 👏"
             else
-              echo "❌ **Some checks failed**"
+              echo "## ❌ Checks Failed"
+              echo ""
+              echo "> **Status:** 🚫 Not ready to merge"
               echo ""
               echo "Please fix the following issues before merging:"
               echo ""
               
               if [ "$CI_PASSED" = "false" ]; then
-                echo "**🔨 Continuous Integration Failed:**"
-                echo "The build process failed. Please fix the issue and run \`npm run build\` locally before making a PR to ensure your changes compile correctly."
+                echo "### 🔨 Continuous Integration Failed"
+                echo ""
+                echo "**Issue:** The build process failed to complete."
+                echo ""
+                echo "**How to fix:**"
+                echo "1. Run \`npm run build\` locally to identify the issue"
+                echo "2. Fix any TypeScript compilation errors"
+                echo "3. Ensure all dependencies are properly installed"
+                echo "4. Test your changes before pushing"
+                echo ""
+                echo "---"
                 echo ""
               fi
               
               if [ "$LINT_PASSED" = "false" ]; then
-                echo "**📝 Linting Failed:**"
-                echo "Code formatting or style issues detected. To fix:"
-                echo "- **For Unix/macOS:** Run \`npm run format\`"
-                echo "- **For Windows:** Run \`npm run format <filename>\` for specific files"
-                echo "- **For reference:** See PR #12 for more details on formatting guidelines"
+                echo "### 📝 Code Linting Failed"
+                echo ""
+                echo "**Issue:** Code formatting or style violations detected."
                 echo ""
                 if [ -n "$LINT_ERRORS" ]; then
-                  echo "**Specific issues:**"
-                  echo '```'
+                  echo "**Specific problems:**"
+                  echo ""
                   echo -e "$LINT_ERRORS"
-                  echo '```'
                   echo ""
                 fi
+                echo "**How to fix:**"
+                echo ""
+                echo "| Platform | Command | Description |"
+                echo "|----------|---------|-------------|"
+                echo "| 🐧 **Unix/macOS/Linux** | \`npm run format\` | Auto-fix all formatting issues |"
+                echo "| 🪟 **Windows** | \`npm run format:file <filename>\` | Fix specific files |"
+                echo "| 🔍 **Check Only** | \`npm run format:check\` | Check formatting without fixing |"
+                echo ""
+                echo "**Need help with linting?** Check out the [Linting Guide for Windows Users](https://github.com/sugarlabs/www-v2/pull/12) for detailed instructions."
+                echo ""
+                echo "---"
+                echo ""
               fi
               
-              echo "**Next steps:**"
-              echo "1. Fix the issues mentioned above"
-              echo "2. Test your changes locally"
-              echo "3. Push your fixes to this branch"
-              echo "4. The bot will automatically re-check when you push new commits"
+              echo "### 🛠️ Next Steps"
               echo ""
-              echo "The bot will update this comment once all checks pass! 🤖"
+              echo "1. **Fix the issues** mentioned above"
+              echo "2. **Test locally** to ensure everything works"
+              echo "3. **Push your fixes** to this branch"
+              echo "4. **Wait for re-check** - This bot will automatically run again"
+              echo ""
+              echo "> 🤖 *This comment will be updated automatically when you push new commits*"
             fi
           } > "$COMMENT_FILE"
 
