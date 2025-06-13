@@ -21,7 +21,7 @@ export const donationData: donationData = {
   url: 'https://www.every.org/sugar-labs?suggestedAmounts=17,37,57&frequency=ONCE#donate',
   urlMonth:
     'https://www.every.org/sugar-labs?suggestedAmounts=17,37,57&frequency=MONTHLY#donate',
-  buttonText: 'Donate now',
+  buttonText: 'Donate now ',
 };
 
 export const IMPACT_STATS = [
