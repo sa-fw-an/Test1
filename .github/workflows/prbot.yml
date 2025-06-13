@@ -88,8 +88,6 @@ jobs:
             if [ "$CI_PASSED" = "true" ] && [ "$LINT_PASSED" = "true" ]; then
               echo "## 🎉 All Checks Passed!"
               echo ""
-              echo "**Status:** ✅ Ready to merge"
-              echo ""
               echo "### ✅ Completed Workflows"
               echo ""
               echo "| Workflow | Status | Details |"
@@ -102,10 +100,10 @@ jobs:
               echo "🚀 **This PR is ready for review and can be safely merged to \`main\` branch!**"
               echo ""
               echo "*Great work! Your code meets all quality standards.* 👏"
+              echo ""
+              echo "### **Status:** ✅ Ready to merge"
             else
               echo "## ❌ Checks Failed"
-              echo ""
-              echo "**Status:** 🚫 Not ready to merge"
               echo ""
               echo "Please fix the following issues before merging:"
               echo ""
@@ -158,6 +156,8 @@ jobs:
               echo "4. **Wait for re-check** - This bot will automatically run again"
               echo ""
               echo "> 🤖 *This comment will be updated automatically when you push new commits*"
+              echo ""
+              echo "### **Status:** 🚫 Not ready to merge"
             fi
           } > "$COMMENT_FILE"
 
