@@ -66,3 +66,4 @@ export const FINANCIAL_FILINGS = [
     year: '2019',
     link: 'assets/tax-filings/2019-Form-990EZ.pdf',
   },
+];
