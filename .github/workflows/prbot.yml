@@ -1,217 +1,141 @@
 name: PR Status Bot
 
 on:
-  workflow_run:
-    workflows: ["Continuous Integration", "Linting"]
+  pull_request_target:
     types:
-      - completed
+      - opened
+      - synchronize
 
 jobs:
-  pr-status-check:
+  check-pr-status:
+    name: Check PR Workflows
     runs-on: ubuntu-latest
-    # Only run if the triggering workflow was from a pull request
-    if: github.event.workflow_run.event == 'pull_request'
-    permissions:
+    permissions: 
       pull-requests: write
-      actions: read
       contents: read
-    
+      issues: write
+      actions: read
+
     steps:
-      - name: Get PR number
-        id: get-pr
-        run: |
-          PR_NUMBER=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }} \
-            --jq '.pull_requests[0].number')
-          echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
-      - name: Check workflow statuses
-        id: check-status
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Build Test (CI Check)
+        id: ci-check
         run: |
-          PR_NUMBER=${{ steps.get-pr.outputs.pr_number }}
+          if npm run build; then
+            echo "CI_PASSED=true" >> $GITHUB_ENV
+            echo "CI_ERROR=" >> $GITHUB_ENV
+          else
+            echo "CI_PASSED=false" >> $GITHUB_ENV
+            echo "CI_ERROR=Build failed" >> $GITHUB_ENV
+          fi
+
+      - name: Run Linting Checks
+        id: lint-check
+        run: |
+          LINT_ERRORS=""
+          LINT_PASSED=true
           
-          if [ "$PR_NUMBER" == "null" ] || [ -z "$PR_NUMBER" ]; then
-            echo "No PR found for this workflow run"
-            exit 0
+          # Run TypeScript linting
+          if ! npm run lint:ts; then
+            LINT_PASSED=false
+            LINT_ERRORS="${LINT_ERRORS}TypeScript linting failed\n"
           fi
           
-          # Get the PR head SHA
-          PR_HEAD_SHA=$(gh api repos/${{ github.repository }}/pulls/$PR_NUMBER --jq '.head.sha')
+          # Run Markdown linting
+          if ! npm run lint:md; then
+            LINT_PASSED=false
+            LINT_ERRORS="${LINT_ERRORS}Markdown linting failed\n"
+          fi
           
-          # Wait a bit for other workflows to complete
-          sleep 30
+          # Check code formatting with Prettier
+          if ! npm run format:check; then
+            LINT_PASSED=false
+            LINT_ERRORS="${LINT_ERRORS}Code formatting issues detected\n"
+          fi
           
-          # Check status of both required workflows
-          CI_STATUS=$(gh api repos/${{ github.repository }}/actions/runs \
-            --field head_sha=$PR_HEAD_SHA \
-            --field event=pull_request \
-            --jq '.workflow_runs[] | select(.name == "Continuous Integration" and .status == "completed") | .conclusion' | head -1)
+          echo "LINT_PASSED=$LINT_PASSED" >> $GITHUB_ENV
+          echo "LINT_ERRORS<<EOF" >> $GITHUB_ENV
+          echo -e "$LINT_ERRORS" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Generate PR Comment
+        id: generate-comment
+        run: |
+          # Extract PR number
+          PR_NUMBER=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
           
-          LINT_STATUS=$(gh api repos/${{ github.repository }}/actions/runs \
-            --field head_sha=$PR_HEAD_SHA \
-            --field event=pull_request \
-            --jq '.workflow_runs[] | select(.name == "Linting" and .status == "completed") | .conclusion' | head -1)
+          # Generate a temporary file for the comment
+          COMMENT_FILE=$(mktemp)
           
-          echo "ci_status=$CI_STATUS" >> $GITHUB_OUTPUT
-          echo "lint_status=$LINT_STATUS" >> $GITHUB_OUTPUT
+          # Save variables to GITHUB_OUTPUT
+          echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_OUTPUT
+          echo "COMMENT_FILE=$COMMENT_FILE" >> $GITHUB_OUTPUT
           
-          # Check if both workflows completed
-          if [ -n "$CI_STATUS" ] && [ -n "$LINT_STATUS" ]; then
-            echo "both_completed=true" >> $GITHUB_OUTPUT
-            if [ "$CI_STATUS" == "success" ] && [ "$LINT_STATUS" == "success" ]; then
-              echo "all_passed=true" >> $GITHUB_OUTPUT
+          # Generate content for the comment file
+          {
+            if [ "$CI_PASSED" = "true" ] && [ "$LINT_PASSED" = "true" ]; then
+              echo "🎉 **All checks passed!**"
+              echo ""
+              echo "Your PR is ready to merge! ✅"
+              echo ""
+              echo "**Completed workflows:**"
+              echo "- ✅ Continuous Integration (Build successful)"
+              echo "- ✅ Linting (Code formatting and style checks passed)"
+              echo ""
+              echo "This PR can now be safely merged to \`main\` branch."
             else
-              echo "all_passed=false" >> $GITHUB_OUTPUT
+              echo "❌ **Some checks failed**"
+              echo ""
+              echo "Please fix the following issues before merging:"
+              echo ""
+              
+              if [ "$CI_PASSED" = "false" ]; then
+                echo "**🔨 Continuous Integration Failed:**"
+                echo "The build process failed. Please fix the issue and run \`npm run build\` locally before making a PR to ensure your changes compile correctly."
+                echo ""
+              fi
+              
+              if [ "$LINT_PASSED" = "false" ]; then
+                echo "**📝 Linting Failed:**"
+                echo "Code formatting or style issues detected. To fix:"
+                echo "- **For Unix/macOS:** Run \`npm run format\`"
+                echo "- **For Windows:** Run \`npm run format <filename>\` for specific files"
+                echo "- **For reference:** See PR #12 for more details on formatting guidelines"
+                echo ""
+                if [ -n "$LINT_ERRORS" ]; then
+                  echo "**Specific issues:**"
+                  echo '```'
+                  echo -e "$LINT_ERRORS"
+                  echo '```'
+                  echo ""
+                fi
+              fi
+              
+              echo "**Next steps:**"
+              echo "1. Fix the issues mentioned above"
+              echo "2. Test your changes locally"
+              echo "3. Push your fixes to this branch"
+              echo "4. The bot will automatically re-check when you push new commits"
+              echo ""
+              echo "The bot will update this comment once all checks pass! 🤖"
             fi
-          else
-            echo "both_completed=false" >> $GITHUB_OUTPUT
-            echo "all_passed=false" >> $GITHUB_OUTPUT
-          fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          } > "$COMMENT_FILE"
 
-      - name: Comment on PR - Success
-        if: steps.check-status.outputs.both_completed == 'true' && steps.check-status.outputs.all_passed == 'true'
-        run: |
-          PR_NUMBER=${{ steps.get-pr.outputs.pr_number }}
-          
-          # Check if we already commented with success
-          EXISTING_COMMENT=$(gh api repos/${{ github.repository }}/issues/$PR_NUMBER/comments \
-            --jq '.[] | select(.body | contains("🎉 All checks passed!")) | .id' | head -1)
-          
-          cat << 'EOF' > success_message.txt
-          🎉 **All checks passed!**
-          
-          Your PR is ready to merge! ✅
-          
-          **Completed workflows:**
-          - ✅ Continuous Integration (Build successful)
-          - ✅ Linting (Code formatting and style checks passed)
-          
-          This PR can now be safely merged to `main` branch.
-          EOF
-          
-          SUCCESS_MESSAGE=$(cat success_message.txt)
-          
-          if [ -n "$EXISTING_COMMENT" ]; then
-            gh api repos/${{ github.repository }}/issues/comments/$EXISTING_COMMENT \
-              -X PATCH \
-              -f body="$SUCCESS_MESSAGE"
-          else
-            gh pr comment $PR_NUMBER --body "$SUCCESS_MESSAGE"
-          fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Comment on PR - Failures
-        if: steps.check-status.outputs.both_completed == 'true' && steps.check-status.outputs.all_passed == 'false'
-        run: |
-          PR_NUMBER=${{ steps.get-pr.outputs.pr_number }}
-          CI_STATUS=${{ steps.check-status.outputs.ci_status }}
-          LINT_STATUS=${{ steps.check-status.outputs.lint_status }}
-          
-          # Check if we already commented with failures
-          EXISTING_COMMENT=$(gh api repos/${{ github.repository }}/issues/$PR_NUMBER/comments \
-            --jq '.[] | select(.body | contains("❌ Some checks failed")) | .id' | head -1)
-          
-          cat << 'EOF' > failure_message.txt
-          ❌ **Some checks failed**
-          
-          Please fix the following issues before merging:
-          
-          EOF
-          
-          if [ "$CI_STATUS" != "success" ]; then
-            cat << 'EOF' >> failure_message.txt
-          **🔨 Continuous Integration Failed:**
-          The build process failed. Please fix the issue and run `npm run build` locally before making a PR to ensure your changes compile correctly.
-          
-          EOF
-          fi
-          
-          if [ "$LINT_STATUS" != "success" ]; then
-            cat << 'EOF' >> failure_message.txt
-          **📝 Linting Failed:**
-          Code formatting or style issues detected. To fix:
-          - **For Unix/macOS:** Run `npm run format`
-          - **For Windows:** Run `npm run format <filename>` for specific files
-          - **For reference:** See PR #12 for more details on formatting guidelines
-          
-          EOF
-          fi
-          
-          cat << 'EOF' >> failure_message.txt
-          **Next steps:**
-          1. Fix the issues mentioned above
-          2. Test your changes locally
-          3. Push your fixes to this branch
-          4. Wait for the workflows to run again
-          
-          The bot will update this comment once all checks pass! 🤖
-          EOF
-          
-          FAILURE_MESSAGE=$(cat failure_message.txt)
-          
-          if [ -n "$EXISTING_COMMENT" ]; then
-            gh api repos/${{ github.repository }}/issues/comments/$EXISTING_COMMENT \
-              -X PATCH \
-              -f body="$FAILURE_MESSAGE"
-          else
-            gh pr comment $PR_NUMBER --body "$FAILURE_MESSAGE"
-          fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Comment on PR - Still Running
-        if: steps.check-status.outputs.both_completed == 'false'
-        run: |
-          PR_NUMBER=${{ steps.get-pr.outputs.pr_number }}
-          CI_STATUS=${{ steps.check-status.outputs.ci_status }}
-          LINT_STATUS=${{ steps.check-status.outputs.lint_status }}
-          
-          # Check if we already commented about pending workflows
-          EXISTING_COMMENT=$(gh api repos/${{ github.repository }}/issues/$PR_NUMBER/comments \
-            --jq '.[] | select(.body | contains("⏳ Workflows are still running")) | .id' | head -1)
-          
-          cat << 'EOF' > pending_message.txt
-          ⏳ **Workflows are still running...**
-          
-          Please wait for all checks to complete:
-          
-          EOF
-          
-          if [ -n "$CI_STATUS" ]; then
-            if [ "$CI_STATUS" == "success" ]; then
-              echo "- ✅ Continuous Integration (Completed)" >> pending_message.txt
-            else
-              echo "- ❌ Continuous Integration (Failed)" >> pending_message.txt
-            fi
-          else
-            echo "- ⏳ Continuous Integration (Running...)" >> pending_message.txt
-          fi
-          
-          if [ -n "$LINT_STATUS" ]; then
-            if [ "$LINT_STATUS" == "success" ]; then
-              echo "- ✅ Linting (Completed)" >> pending_message.txt
-            else
-              echo "- ❌ Linting (Failed)" >> pending_message.txt
-            fi
-          else
-            echo "- ⏳ Linting (Running...)" >> pending_message.txt
-          fi
-          
-          echo "" >> pending_message.txt
-          echo "This comment will be updated once all workflows complete." >> pending_message.txt
-          
-          PENDING_MESSAGE=$(cat pending_message.txt)
-          
-          if [ -n "$EXISTING_COMMENT" ]; then
-            gh api repos/${{ github.repository }}/issues/comments/$EXISTING_COMMENT \
-              -X PATCH \
-              -f body="$PENDING_MESSAGE"
-          else
-            gh pr comment $PR_NUMBER --body "$PENDING_MESSAGE"
-          fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Comment on PR
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          file-path: ${{ steps.generate-comment.outputs.COMMENT_FILE }}
+          pr-number: ${{ steps.generate-comment.outputs.PR_NUMBER }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
