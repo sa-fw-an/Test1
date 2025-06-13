@@ -1,25 +1,24 @@
 ---
-title: "Learn: How to git involved with Sugar Labs this summer"
-excerpt: "Join Sugar Labs Executive Director Devin Ulibarri for a live session on how to get involved with Sugar Labs this summer while learning valuable programming skills and contributing to educational software."
+title: "GSoC+DMP contributors initial check-in 1 of 2: Music Blocks projects"
+excerpt: "Join Sugar Labs for an introduction to Google Summer of Code (GSoC) and DMP projects this summer, presented by GSoC and DMP interns andfacilitated by their mentors, Devin Ulibarri, Walter Bender, and Anindya Kundu. Watch live on Friday, June 7, 2024 at 13:00 ET (17:00UTC)."
 category: "EVENTS"
-date: "2024-05-31"
-slug: "how-to-git-involved-sugar-labs-summer"
+date: "2024-06-07"
+slug: "gsoc-dmp-contributors"
 author: "Sugar Labs"
 description: "Education Nonprofit"
 tags: "volunteer,git,programming,education,summer-programs,open-source,mentorship,coding"
 ---
 <!-- markdownlint-disable -->
 
-**Sugar Labs executive director Devin Ulibarri gives a short intro on ways to "git" involved with Sugar Labs this summer, while learning valuable skills. Watch live on Friday, May 31, 2024 at 15:00 ET (19:00 UTC).**
+**Join Sugar Labs for an introduction to Google Summer of Code (GSoC) and DMP projects this summer, presented by GSoC and DMP interns andfacilitated by their mentors, Devin Ulibarri, Walter Bender, and Anindya Kundu. Watch live on Friday, June 7, 2024 at 13:00 ET (17:00UTC).**
 
-## Event Information
+## Event information
 
-- **Title:** Learn: How to git involved with Sugar Labs this summer  
-- **Date:** May 31, 2024  
-- **Time:** 15:00 ET (19:00 UTC)  
-- **Watch Live:** [YouTube Link](https://www.youtube.com/watch?v=W5ZLFBZkE34)  
-- **Platform:** [Sugar Labs YouTube Channel](https://www.youtube.com/@SugarlabsOrg-EN/streams)
-
+- **Title:** GSoC+DMP contributors initial check-in 1 of 2: Music Blocks projects
+- **Date:** June 7, 2024
+- **Time:** 13:00 ET (17:00 UTC)
+- **Watch Live:** [YouTube Link](https://www.youtube.com/watch?v=PeIS3gXPFj0)
+- **Platform:**  [Sugar Labs YouTube Channel](https://www.youtube.com/@SugarlabsOrg-EN/streams)
 ---
 
 ## About Sugar Labs

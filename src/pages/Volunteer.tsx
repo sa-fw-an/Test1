@@ -21,6 +21,13 @@ const Volunteer = () => {
     developerLinks.find((link) => link.name.includes('Mailing'))?.url ||
     'https://lists.sugarlabs.org/';
 
+  const handleGetInvolved = () => {
+    const gettingInvolvedSection = document.getElementById('volunteer-cards');
+    if (gettingInvolvedSection) {
+      gettingInvolvedSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -46,8 +53,11 @@ const Volunteer = () => {
               Sugar Labs community have ample opportunities to grow their skills
               and learn from one another.
             </p>
-            <button className="mt-6 bg-red-500 text-white text-lg font-semibold px-6 py-3 rounded-full">
-              Getting Involved
+            <button
+              className="mt-6 bg-red-500 text-white text-lg font-semibold px-6 py-3 rounded-full"
+              onClick={handleGetInvolved}
+            >
+              Get Involved
             </button>
           </motion.div>
 
@@ -105,7 +115,7 @@ const Volunteer = () => {
         </motion.div>
 
         {/* Volunteer Roles */}
-        <div className="mt-16 max-w-6xl px-4">
+        <div className="mt-16 max-w-6xl px-4" id="volunteer-cards">
           <motion.h2
             className="text-5xl font-[Caveat] font-bold text-center"
             variants={slideInBottom}

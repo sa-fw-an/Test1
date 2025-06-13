@@ -62,6 +62,7 @@ export const parseFrontmatter = (
 
 /**
  * Fetch and parse all markdown blog posts
+ * If `category` is passed, filters the result by exact match.
  */
 export const fetchMarkdownPosts = async (
   category?: string,
@@ -85,7 +86,6 @@ export const fetchMarkdownPosts = async (
         );
         const fileName = filePath.split('/').pop()?.replace('.md', '') || '';
 
-        // build image URL: only prefix "/" if it’s not a real http(s) URL
         let imageUrl: string;
         if (Array.isArray(frontmatter.image)) {
           imageUrl = frontmatter.image.join(' ').trim();
@@ -108,8 +108,10 @@ export const fetchMarkdownPosts = async (
             : frontmatter.excerpt || '',
           content,
           category: Array.isArray(frontmatter.category)
-            ? frontmatter.category.join(' ')
-            : frontmatter.category || 'UNCATEGORIZED',
+            ? frontmatter.category.join(' ').trim()
+            : frontmatter.category
+              ? frontmatter.category.trim()
+              : 'UNCATEGORIZED',
           date: Array.isArray(frontmatter.date)
             ? frontmatter.date.join(' ')
             : frontmatter.date || 'No date',
@@ -159,4 +161,23 @@ export const fetchMarkdownPosts = async (
 export const getPostBySlug = async (slug: string): Promise<Post | null> => {
   const allPosts = await fetchMarkdownPosts();
   return allPosts.find((post) => post.slug === slug) || null;
+};
+
+export const getAllPosts = async (): Promise<Post[]> => {
+  return fetchMarkdownPosts();
+};
+
+export const groupPostsByCategory = (posts: Post[]): Record<string, Post[]> => {
+  const map: Record<string, Post[]> = {};
+
+  posts.forEach((post) => {
+    const cat = post.category || 'UNCATEGORIZED';
+    if (!map[cat]) {
+      map[cat] = [];
+    }
+    map[cat].push(post);
+  });
+
+  map['All'] = posts;
+  return map;
 };
