@@ -1,0 +1,242 @@
+name: PR Status Bot
+
+on:
+  workflow_run:
+    workflows: ["Continuous Integration", "Linting", "Continuous Deployment"]
+    types:
+      - completed
+
+jobs:
+  pr-status-check:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      actions: read
+      contents: read
+    
+    steps:
+      - name: Get PR details
+        id: pr-details
+        run: |
+          # Get PR number if this workflow run is associated with a PR
+          PR_DATA=$(gh api repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }} \
+            --jq '.pull_requests[0]? // empty')
+          
+          if [ -n "$PR_DATA" ] && [ "$PR_DATA" != "null" ]; then
+            PR_NUMBER=$(echo "$PR_DATA" | jq -r '.number')
+            PR_HEAD_SHA=$(echo "$PR_DATA" | jq -r '.head.sha')
+            echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+            echo "pr_head_sha=$PR_HEAD_SHA" >> $GITHUB_OUTPUT
+            echo "is_pr=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_pr=false" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check PR workflow status
+        id: check-pr-status
+        if: steps.pr-details.outputs.is_pr == 'true'
+        run: |
+          PR_HEAD_SHA=${{ steps.pr-details.outputs.pr_head_sha }}
+          
+          # Wait a moment for other workflows to potentially complete
+          sleep 30
+          
+          # Get workflow runs for this PR commit
+          # For PRs, we only expect CI and Linting workflows
+          EXPECTED_WORKFLOWS=("Continuous Integration" "Linting")
+          
+          ALL_SUCCESS=true
+          COMPLETED_WORKFLOWS=()
+          FAILED_WORKFLOWS=()
+          PENDING_WORKFLOWS=()
+          
+          for workflow in "${EXPECTED_WORKFLOWS[@]}"; do
+            # Get the latest run for this workflow and commit
+            WORKFLOW_RUN=$(gh api repos/${{ github.repository }}/actions/runs \
+              --field head_sha=$PR_HEAD_SHA \
+              --field event=pull_request \
+              --jq ".workflow_runs[] | select(.name == \"$workflow\") | {status: .status, conclusion: .conclusion, name: .name}" | head -1)
+            
+            if [ -n "$WORKFLOW_RUN" ]; then
+              STATUS=$(echo "$WORKFLOW_RUN" | jq -r '.status')
+              CONCLUSION=$(echo "$WORKFLOW_RUN" | jq -r '.conclusion')
+              
+              if [ "$STATUS" == "completed" ]; then
+                COMPLETED_WORKFLOWS+=("$workflow")
+                if [ "$CONCLUSION" != "success" ]; then
+                  FAILED_WORKFLOWS+=("$workflow ($CONCLUSION)")
+                  ALL_SUCCESS=false
+                fi
+              else
+                PENDING_WORKFLOWS+=("$workflow")
+                ALL_SUCCESS=false
+              fi
+            else
+              PENDING_WORKFLOWS+=("$workflow")
+              ALL_SUCCESS=false
+            fi
+          done
+          
+          # Check if all expected workflows are completed
+          ALL_COMPLETED=$([ ${#COMPLETED_WORKFLOWS[@]} -eq ${#EXPECTED_WORKFLOWS[@]} ] && echo "true" || echo "false")
+          
+          echo "all_success=$ALL_SUCCESS" >> $GITHUB_OUTPUT
+          echo "all_completed=$ALL_COMPLETED" >> $GITHUB_OUTPUT
+          echo "completed_count=${#COMPLETED_WORKFLOWS[@]}" >> $GITHUB_OUTPUT
+          echo "expected_count=${#EXPECTED_WORKFLOWS[@]}" >> $GITHUB_OUTPUT
+          
+          # Format failed workflows for output
+          printf -v FAILED_LIST '%s\n' "${FAILED_WORKFLOWS[@]}"
+          echo "failed_workflows<<EOF" >> $GITHUB_OUTPUT
+          echo "$FAILED_LIST" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+          # Format pending workflows for output
+          printf -v PENDING_LIST '%s\n' "${PENDING_WORKFLOWS[@]}"
+          echo "pending_workflows<<EOF" >> $GITHUB_OUTPUT
+          echo "$PENDING_LIST" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment on PR - Success
+        if: steps.pr-details.outputs.is_pr == 'true' && steps.check-pr-status.outputs.all_success == 'true' && steps.check-pr-status.outputs.all_completed == 'true'
+        run: |
+          PR_NUMBER=${{ steps.pr-details.outputs.pr_number }}
+          
+          # Check if we already have a success comment
+          EXISTING_COMMENT=$(gh api repos/${{ github.repository }}/issues/$PR_NUMBER/comments \
+            --jq '.[] | select(.body | contains("🎉 **All PR workflows completed successfully!**")) | .id' | head -1)
+          
+          SUCCESS_MESSAGE="🎉 **All PR workflows completed successfully!**
+
+This PR is ready to merge! ✅
+
+**Completed workflows:**
+- ✅ Continuous Integration (Build test passed)
+- ✅ Linting (Code quality checks passed)
+
+**What happens next:**
+- Your PR is ready for review and merge
+- Once merged to \`main\`, the Continuous Deployment workflow will automatically deploy to GitHub Pages
+
+Great work! 🚀"
+
+          if [ -n "$EXISTING_COMMENT" ]; then
+            # Update existing comment
+            gh api repos/${{ github.repository }}/issues/comments/$EXISTING_COMMENT \
+              -X PATCH \
+              -f body="$SUCCESS_MESSAGE"
+          else
+            # Create new comment
+            gh pr comment $PR_NUMBER --body "$SUCCESS_MESSAGE"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment on PR - Partial or Failed
+        if: steps.pr-details.outputs.is_pr == 'true' && (steps.check-pr-status.outputs.all_success == 'false' || steps.check-pr-status.outputs.all_completed == 'false')
+        run: |
+          PR_NUMBER=${{ steps.pr-details.outputs.pr_number }}
+          FAILED_WORKFLOWS="${{ steps.check-pr-status.outputs.failed_workflows }}"
+          PENDING_WORKFLOWS="${{ steps.check-pr-status.outputs.pending_workflows }}"
+          COMPLETED_COUNT=${{ steps.check-pr-status.outputs.completed_count }}
+          EXPECTED_COUNT=${{ steps.check-pr-status.outputs.expected_count }}
+          
+          # Check if we already have a failure/pending comment
+          EXISTING_COMMENT=$(gh api repos/${{ github.repository }}/issues/$PR_NUMBER/comments \
+            --jq '.[] | select(.body | contains("⏳ **PR workflows status**") or contains("❌ **Some PR workflows failed**")) | .id' | head -1)
+          
+          if [ -n "$PENDING_WORKFLOWS" ]; then
+            # Some workflows are still pending
+            COMMENT_MESSAGE="⏳ **PR workflows status** ($COMPLETED_COUNT/$EXPECTED_COUNT completed)
+
+Some workflows are still running. Please wait for all checks to complete.
+
+**Pending workflows:**"
+            while IFS= read -r workflow; do
+              if [ -n "$workflow" ]; then
+                COMMENT_MESSAGE="$COMMENT_MESSAGE
+- ⏳ $workflow"
+              fi
+            done <<< "$PENDING_WORKFLOWS"
+
+            if [ -n "$FAILED_WORKFLOWS" ]; then
+              COMMENT_MESSAGE="$COMMENT_MESSAGE
+
+**Failed workflows:**"
+              while IFS= read -r workflow; do
+                if [ -n "$workflow" ]; then
+                  COMMENT_MESSAGE="$COMMENT_MESSAGE
+- ❌ $workflow"
+                fi
+              done <<< "$FAILED_WORKFLOWS"
+            fi
+          else
+            # All workflows completed but some failed
+            COMMENT_MESSAGE="❌ **Some PR workflows failed**
+
+This PR is not ready to merge. Please fix the failing workflows and push your changes.
+
+**Failed workflows:**"
+            while IFS= read -r workflow; do
+              if [ -n "$workflow" ]; then
+                COMMENT_MESSAGE="$COMMENT_MESSAGE
+- ❌ $workflow"
+              fi
+            done <<< "$FAILED_WORKFLOWS"
+
+            COMMENT_MESSAGE="$COMMENT_MESSAGE
+
+**How to fix:**
+1. Check the workflow logs above for detailed error information
+2. Fix any failing tests, linting issues, or build problems
+3. Push your fixes to this branch to re-trigger the workflows
+4. Wait for all workflows to pass
+
+Need help? Feel free to ask for assistance in the comments below! 💪"
+          fi
+
+          if [ -n "$EXISTING_COMMENT" ]; then
+            # Update existing comment
+            gh api repos/${{ github.repository }}/issues/comments/$EXISTING_COMMENT \
+              -X PATCH \
+              -f body="$COMMENT_MESSAGE"
+          else
+            # Create new comment
+            gh pr comment $PR_NUMBER --body "$COMMENT_MESSAGE"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment on successful deployment (main branch)
+        if: steps.pr-details.outputs.is_pr == 'false' && github.event.workflow_run.name == 'Continuous Deployment' && github.event.workflow_run.conclusion == 'success'
+        run: |
+          # Find the most recent merged PR for this commit
+          COMMIT_SHA=${{ github.event.workflow_run.head_sha }}
+          
+          # Look for recently merged PRs
+          RECENT_PR=$(gh api repos/${{ github.repository }}/pulls \
+            --field state=closed \
+            --field sort=updated \
+            --field per_page=10 \
+            --jq ".[] | select(.merged_at != null and .merge_commit_sha == \"$COMMIT_SHA\") | .number" | head -1)
+          
+          if [ -n "$RECENT_PR" ] && [ "$RECENT_PR" != "null" ]; then
+            DEPLOY_MESSAGE="🚀 **Deployment Successful!**
+
+Your PR has been successfully merged and deployed to GitHub Pages!
+
+**Deployment details:**
+- ✅ Continuous Deployment completed successfully
+- 🌐 Site updated at: https://www.sugarlabs.org
+- 📦 Deployed commit: \`$COMMIT_SHA\`
+
+Your changes are now live! 🎉"
+
+            gh pr comment $RECENT_PR --body "$DEPLOY_MESSAGE"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
