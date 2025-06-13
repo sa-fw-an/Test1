@@ -1,4 +1,4 @@
-name: PR Status Bot
+name: PR Bot
 
 on:
   pull_request_target:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   check-pr-status:
-    name: Check PR Workflows
+    name: Workflow Status Check
     runs-on: ubuntu-latest
     permissions: 
       pull-requests: write
@@ -88,7 +88,7 @@ jobs:
             if [ "$CI_PASSED" = "true" ] && [ "$LINT_PASSED" = "true" ]; then
               echo "## 🎉 All Checks Passed!"
               echo ""
-              echo "> **Status:** ✅ Ready to merge"
+              echo "**Status:** ✅ Ready to merge"
               echo ""
               echo "### ✅ Completed Workflows"
               echo ""
@@ -105,7 +105,7 @@ jobs:
             else
               echo "## ❌ Checks Failed"
               echo ""
-              echo "> **Status:** 🚫 Not ready to merge"
+              echo "**Status:** 🚫 Not ready to merge"
               echo ""
               echo "Please fix the following issues before merging:"
               echo ""
