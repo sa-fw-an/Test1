@@ -25,34 +25,6 @@ const Info: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const renderImageCard = (key: string, image: ImageConfig) => (
-    <motion.div
-      key={key}
-      className="group relative rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl 
-                 transition-all duration-500 bg-white"
-      variants={subtleRise}
-      whileHover="hover"
-    >
-      <img
-        src={image.src}
-        alt={image.alt}
-        className="w-full h-60 sm:h-72 md:h-80 lg:h-96 object-cover transform group-hover:scale-105 
-                   transition-all duration-700 ease-out"
-        loading="lazy"
-      />
-      {image.caption && (
-        <div
-          className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 
-                   to-transparent p-3 sm:p-4 md:p-6 lg:p-8"
-        >
-          <p className="text-white font-medium text-sm sm:text-base md:text-lg lg:text-xl">
-            {image.caption}
-          </p>
-        </div>
-      )}
-    </motion.div>
-  );
-
   const renderCarouselItem = (key: string, image: ImageConfig) => (
     <div key={key} className="relative">
       <img
@@ -131,7 +103,33 @@ const Info: React.FC = () => {
             >
               {Object.entries(images)
                 .filter(([key]) => key.startsWith('bottom'))
-                .map(([key, image]) => renderImageCard(key, image))}
+                .map(([key, image]) => (
+                  <motion.div
+                    key={key}
+                    className="group relative rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl 
+                  transition-all duration-500 bg-white"
+                    variants={subtleRise}
+                    whileHover="hover"
+                  >
+                    <img
+                      src={image.src}
+                      alt={image.alt || key}
+                      className="w-full h-auto object-cover transform group-hover:scale-105 
+                    transition-all duration-700 ease-out"
+                      loading="lazy"
+                    />
+                    {image.caption && (
+                      <div
+                        className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 
+                     to-transparent p-3 sm:p-4 md:p-6 lg:p-8"
+                      >
+                        <p className="text-white font-medium text-sm sm:text-base md:text-lg lg:text-xl">
+                          {image.caption}
+                        </p>
+                      </div>
+                    )}
+                  </motion.div>
+                ))}
             </motion.div>
 
             {/* Mobile Carousel */}
